@@ -13,6 +13,7 @@ namespace ESFA.DC.Logging.IntergrationTests
     {
         public string MasterConnectionString { get; protected set; }
         public string AppConnectionString { get; protected set; }
+        private bool _isDatabaseCratedByTests = false;
 
         public DatabaseHelper(string connectionString)
         {
@@ -85,13 +86,16 @@ namespace ESFA.DC.Logging.IntergrationTests
         public void CreateIfNotExists()
         {
             if (!CheckIfDatabaseExists())
-                ExecuteCommand("CREATE DATABASE AppLogs" );
+            {
+                ExecuteCommand("CREATE DATABASE AppLogs");
+                _isDatabaseCratedByTests = true;
+            }
         }
 
         public void DropIfExists()
         {
 
-            if (CheckIfDatabaseExists())
+            if (CheckIfDatabaseExists() && _isDatabaseCratedByTests == true)
             {
                 ExecuteCommand("ALTER DATABASE AppLogs SET SINGLE_USER WITH ROLLBACK IMMEDIATE");
                 ExecuteCommand("DROP DATABASE AppLogs");

@@ -16,6 +16,13 @@ namespace ESFA.DC.Logging.IntergrationTests.Models
         public string Exception { get; set; }
         public string Properties { get; set; }
         public string ApplicationId { get; set; }
-        
+        public string MachineName { get; set; }
+        public string ProcessName { get; set; }
+        public string ThreadId { get; set; }
+        public string CallerName { get; set; }
+        public string SourceFile { get; set; }
+        public string LineNumber { get; set; }
+
+
     }
 }

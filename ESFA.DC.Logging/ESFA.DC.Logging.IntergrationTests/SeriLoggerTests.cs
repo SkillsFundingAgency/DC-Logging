@@ -4,8 +4,10 @@ using ESFA.DC.Logging.SeriLogging;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -77,7 +79,7 @@ namespace ESFA.DC.Logging.IntergrationTests
 
             
 
-        private void AssertLog(string logLevel )
+        private void AssertLog(string logLevel)
         {
             var logs = fixture.GetLogs();
 
@@ -90,12 +92,15 @@ namespace ESFA.DC.Logging.IntergrationTests
             Assert.Equal($"test {logLevel}", log.Message);
             Assert.Equal(logLevel, log.Level);
             Assert.Equal($"test {logLevel}", log.MessageTemplate);
-            Assert.NotEmpty(log.Properties);
-            Assert.Contains("MachineName",log.Properties);
-            Assert.Contains("ProcessName", log.Properties);
-            Assert.Contains("ProcessId", log.Properties);
-            Assert.Contains("ThreadId", log.Properties);
-            Assert.Contains("EnvironmentUserName", log.Properties);
+            
+            Assert.Equal(Environment.MachineName,log.MachineName);
+            Assert.Equal(Process.GetCurrentProcess().ProcessName, log.ProcessName);
+            Assert.Equal(Thread.CurrentThread.ManagedThreadId.ToString(), log.ThreadId);
+
+            Assert.Equal($"TestLog{logLevel}", log.CallerName);
+            Assert.Contains("SeriLoggerTests.cs", log.SourceFile);
+            Assert.NotNull(log.LineNumber);
+
 
 
         }

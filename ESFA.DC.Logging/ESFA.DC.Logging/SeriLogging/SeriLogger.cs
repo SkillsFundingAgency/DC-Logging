@@ -71,7 +71,6 @@ namespace ESFA.DC.Logging.SeriLogging
             //setup the configuartion
             var seriConfig = new LoggerConfiguration()
                     .Enrich.FromLogContext()
-                    .Enrich.WithEnvironmentUserName() // not sure if this will be useful??
                     .Enrich.With<EnvironmentEnricher>()
                     .Enrich.WithProperty("ApplicationId", _appLoggerSettings.ApplicationName);
 
