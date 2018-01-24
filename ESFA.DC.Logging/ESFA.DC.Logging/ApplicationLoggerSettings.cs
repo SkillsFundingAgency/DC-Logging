@@ -15,5 +15,6 @@ namespace ESFA.DC.Logging
         public string Environment { get; set; } = "DEV";
         public LogOutputDestination LoggerOutput { get; set; } = LogOutputDestination.SqlServer;
         public string LogsTableName { get; set; } = "Logs";
+        
     }
 }

@@ -20,19 +20,35 @@ namespace ESFA.DC.Logging.SeriLogging
         private Logger logger = null;
         private ApplicationLoggerSettings _appLoggerSettings = null;
         private LoggerConfiguration _seriConfig = null;
+
+        private string _jobId = string.Empty;
+        private string _taskKey = string.Empty;
         
-
-        private ILogEventSink _sink = null;
-
+      
         #region Constructors
-    
-        public SeriLogger(ApplicationLoggerSettings appConfig)
+
+        public SeriLogger(ApplicationLoggerSettings appConfig, string jobId)
+        {
+            InitialzeLogger(appConfig, jobId, string.Empty);
+        }
+
+        public SeriLogger(ApplicationLoggerSettings appConfig, string jobId,string taskKey)
+        {
+            InitialzeLogger(appConfig, jobId, taskKey);
+        }
+
+        private void InitialzeLogger(ApplicationLoggerSettings appConfig, string jobId, string taskKey)
         {
             _appLoggerSettings = appConfig;
-            _seriConfig = ConfigureSerilog();
+            _jobId = jobId;
+            _taskKey = taskKey;
 
-            Serilog.Debugging.SelfLog.Enable(msg => Debug.WriteLine(msg));
+            _seriConfig = ConfigureSerilog();
+          
+           /*  
+             Serilog.Debugging.SelfLog.Enable(msg => Debug.WriteLine(msg));
             Serilog.Debugging.SelfLog.Enable(Console.Error);
+            */
 
             if (appConfig.LoggerOutput == Enums.LogOutputDestination.SqlServer)
             {
@@ -43,17 +59,8 @@ namespace ESFA.DC.Logging.SeriLogging
                logger= ConsoleLoggerFactory.CreateLogger(_seriConfig);
             }
 
-            
-
-
         }
-        public SeriLogger(ApplicationLoggerSettings appConfig, ILogEventSink sink)
-        {
-            //_appLoggerSettings = appConfig;
-            _sink = sink;
-            logger = GenericLoggerFactory.CreateLogger(_seriConfig,sink);
-        }
-
+      
 
         #endregion
 
@@ -72,7 +79,9 @@ namespace ESFA.DC.Logging.SeriLogging
             var seriConfig = new LoggerConfiguration()
                     .Enrich.FromLogContext()
                     .Enrich.With<EnvironmentEnricher>()
-                    .Enrich.WithProperty("ApplicationId", _appLoggerSettings.ApplicationName);
+                    .Enrich.WithProperty("ApplicationId", _appLoggerSettings.ApplicationName)
+                    .Enrich.WithProperty("JobId", _jobId)
+                    .Enrich.WithProperty("TaskKey", _taskKey);
 
             switch (_appLoggerSettings.MinimumLogLevel)
             {
@@ -107,38 +116,36 @@ namespace ESFA.DC.Logging.SeriLogging
 
         #region Logger functions
         public void LogError(string message, 
-                            Exception ex, 
+                            Exception ex,
+                            object[] parameters = null,
                             [CallerMemberName] string callerName = "", 
                             [CallerFilePath] string sourceFile = "", 
-                            [CallerLineNumber] int lineNumber = 0, 
-                            params object[] parameters )
+                            [CallerLineNumber] int lineNumber = 0)
         {
             AddContext(callerName, sourceFile, lineNumber).Error(ex,message,  parameters);
         }
         
-        public void LogWarning(string message, 
+        public void LogWarning(string message,
+                            object[] parameters = null,
                             [CallerMemberName] string callerName = "",
                             [CallerFilePath] string sourceFile = "",
-                            [CallerLineNumber] int lineNumber = 0, 
-                            params object[] parameters)
+                            [CallerLineNumber] int lineNumber = 0)
         {
             AddContext(callerName, sourceFile, lineNumber).Warning(message,parameters);
         }
 
-        public void LogDebug(string message,
+        public void LogDebug(string message, object[] parameters = null,
                             [CallerMemberName] string callerName = "",
                             [CallerFilePath] string sourceFile = "",
-                            [CallerLineNumber] int lineNumber = 0, 
-                            params object[] parameters)
+                            [CallerLineNumber] int lineNumber = 0)
         {
             AddContext(callerName, sourceFile, lineNumber).Debug(message,parameters);
         }
 
-        public void LogInfo(string message,
+        public void LogInfo(string message, object[] parameters = null,
                             [CallerMemberName] string callerName = "",
                             [CallerFilePath] string sourceFile = "",
-                            [CallerLineNumber] int lineNumber = 0,
-                            params object[] parameters)
+                            [CallerLineNumber] int lineNumber = 0)
         {
             AddContext(callerName, sourceFile, lineNumber).Information(message, parameters);
         }
@@ -150,8 +157,8 @@ namespace ESFA.DC.Logging.SeriLogging
         {
             return logger.ForContext("CallerName", callerName)
                   .ForContext("SourceFile", sourceFile)
-                  .ForContext("LineNumber", lineNumber);
-                 
+                  .ForContext("LineNumber", lineNumber)
+                  .ForContext("TimeStampUTC", DateTime.Now.ToUniversalTime());
         }
         public void Dispose()
         {
