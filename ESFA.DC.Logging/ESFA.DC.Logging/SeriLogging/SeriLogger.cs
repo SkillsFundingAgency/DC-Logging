@@ -39,6 +39,13 @@ namespace ESFA.DC.Logging.SeriLogging
 
         private void InitialzeLogger(ApplicationLoggerSettings appConfig, string jobId, string taskKey)
         {
+            if (appConfig.EnableInternalLogs)
+            {
+                Serilog.Debugging.SelfLog.Enable(msg => Debug.WriteLine(msg));
+                Serilog.Debugging.SelfLog.Enable(Console.Error);
+            }
+
+
             _appLoggerSettings = appConfig;
             _jobId = jobId;
             _taskKey = taskKey;

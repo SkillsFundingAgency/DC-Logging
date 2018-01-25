@@ -10,7 +10,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>ESFA.DC.Logging.IntergrationTests</RootNamespace>
     <AssemblyName>ESFA.DC.Logging.IntergrationTests</AssemblyName>
-    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <NuGetPackageImportStamp>
