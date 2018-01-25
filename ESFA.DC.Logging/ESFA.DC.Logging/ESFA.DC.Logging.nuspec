@@ -21,6 +21,11 @@
       <dependency id="Serilog.Sinks.Console" version="3.1.1" />
     </dependencies>
   </metadata>
+  <files>
+    <file src="**\*.dll" target="lib" />
+    <file src="**\*.pdb" target="lib" />
+    <file src="**\*.xml" target="lib" />
+  </files>
 </package>
 
 
