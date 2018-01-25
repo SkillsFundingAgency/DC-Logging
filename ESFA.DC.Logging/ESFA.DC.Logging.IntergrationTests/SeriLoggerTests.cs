@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -13,6 +14,7 @@ using Xunit;
 
 namespace ESFA.DC.Logging.IntergrationTests
 {
+    [ExcludeFromCodeCoverageAttribute]
     public class SeriLoggerTests : IClassFixture<TestBaseFixture>
     {
         readonly TestBaseFixture _fixture = null;

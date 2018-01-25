@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace ESFA.DC.Logging.IntergrationTests
 {
+    [ExcludeFromCodeCoverageAttribute]
     public class DatabaseHelper
     {
         public string MasterConnectionString { get; protected set; }

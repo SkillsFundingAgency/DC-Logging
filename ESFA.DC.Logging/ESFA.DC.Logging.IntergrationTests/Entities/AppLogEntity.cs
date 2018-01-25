@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ESFA.DC.Logging.IntergrationTests.Models
 {
+    [ExcludeFromCodeCoverageAttribute]
     public class AppLogEntity
     {
         public int Id { get; set; }
