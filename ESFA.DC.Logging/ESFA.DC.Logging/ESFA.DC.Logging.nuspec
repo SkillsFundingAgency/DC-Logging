@@ -14,12 +14,13 @@
     <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
     <copyright>Copyright 2018</copyright>
     <tags>Tag1 Tag2</tags>
+    <dependencies>
+      <dependency id="Serilog.Sinks.MSSqlServer" version="5.1.0" />
+      <dependency id="Serilog.Enrichers.Environment" version="2.1.2" />
+      <dependency id="Serilog.Enrichers.Process" version="2.0.1" />
+      <dependency id="Serilog.Sinks.Console" version="3.1.1" />
+    </dependencies>
   </metadata>
-  <files>
-    <file src="..\bin\Debug\*.dll" target="bin" />
-    <file src="..\bin\Debug\*.exe" target="bin" />
-    <file src="..\bin\Debug\*.config" target="bin" />
-  </files>
 </package>
 
 
