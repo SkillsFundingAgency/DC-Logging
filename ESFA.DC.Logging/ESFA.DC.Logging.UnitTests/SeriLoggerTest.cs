@@ -133,7 +133,7 @@ namespace ESFA.DC.Logging.UnitTests
             config.LoggerOutput = LogOutputDestination.Console;
             config.MinimumLogLevel = logLevel;
             
-            return new SeriLogger(config, jobId);
+            return new SeriLogger(config, jobId,taskKey);
           
         }
 

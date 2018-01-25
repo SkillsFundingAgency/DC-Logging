@@ -17,7 +17,7 @@ namespace ESFA.DC.Logging.IntergrationTests
     [ExcludeFromCodeCoverageAttribute]
     public  class TestBaseFixture : IDisposable
     {
-        private string _connectionString ;
+        private readonly string _connectionString ;
         private readonly DatabaseHelper _databaseHelper ;
 
         public TestBaseFixture()
