@@ -30,7 +30,7 @@ namespace ESFA.DC.Logging.IntergrationTests
         }
 
 
-        [SuppressMessage("Security", "csharpsquid: S3649")]
+        [SuppressMessage("Security", "S3649")]
         public bool CheckIfTableExists(string tableName, string connectionString)
         {
             using (var connection = new SqlConnection(connectionString))
