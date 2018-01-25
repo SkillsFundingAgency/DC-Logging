@@ -3,6 +3,7 @@ using ESFA.DC.Logging.IntergrationTests.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +29,7 @@ namespace ESFA.DC.Logging.IntergrationTests
         }
 
 
+        [SuppressMessage("Security", "csharpsquid: S3649")]
         public bool CheckIfTableExists(string tableName, string connectionString)
         {
             using (var connection = new SqlConnection(connectionString))
@@ -36,6 +38,7 @@ namespace ESFA.DC.Logging.IntergrationTests
 
                 using (var command = connection.CreateCommand())
                 {
+                    
                     command.CommandText = $"select * from information_schema.tables where table_name = '{tableName}'";
                     using (var reader = command.ExecuteReader())
                     {

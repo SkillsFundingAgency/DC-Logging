@@ -13,13 +13,23 @@ namespace ESFA.DC.Logging.UnitTests
     public class SerilogConfigurationTests
     {
         [Fact]
-        public void SetupSeriLogConfig()
+        public void SetupSeriLogConfigForJob()
         {
             var logger = new SeriLogger(new Mock<ApplicationLoggerSettings>().Object, "Job1");
             var l = logger.ConfigureSerilog();
 
             Assert.NotNull(l);
             
+        }
+
+        [Fact]
+        public void SetupSeriLogConfigForTaskKey()
+        {
+            var logger = new SeriLogger(new Mock<ApplicationLoggerSettings>().Object, "Job1","taskkey");
+            var l = logger.ConfigureSerilog();
+
+            Assert.NotNull(l);
+
         }
     }
 }

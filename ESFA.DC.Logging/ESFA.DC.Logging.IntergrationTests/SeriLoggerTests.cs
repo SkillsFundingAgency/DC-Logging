@@ -85,11 +85,7 @@ namespace ESFA.DC.Logging.IntergrationTests
             }
         }
 
-       
-            
-
-
-        
+               
 
     }
 }
