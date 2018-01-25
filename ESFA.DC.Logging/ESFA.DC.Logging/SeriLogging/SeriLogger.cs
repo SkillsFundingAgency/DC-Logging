@@ -19,7 +19,7 @@ namespace ESFA.DC.Logging.SeriLogging
     {
         private Logger logger = null;
         private ApplicationLoggerSettings _appLoggerSettings = null;
-        private LoggerConfiguration _seriConfig = null;
+      
 
         private string _jobId = string.Empty;
         private string _taskKey = string.Empty;
@@ -43,20 +43,16 @@ namespace ESFA.DC.Logging.SeriLogging
             _jobId = jobId;
             _taskKey = taskKey;
 
-            _seriConfig = ConfigureSerilog();
+            var seriConfig = ConfigureSerilog();
           
-           /*  
-             Serilog.Debugging.SelfLog.Enable(msg => Debug.WriteLine(msg));
-            Serilog.Debugging.SelfLog.Enable(Console.Error);
-            */
-
+   
             if (appConfig.LoggerOutput == Enums.LogOutputDestination.SqlServer)
             {
-              logger =   SqlServerLoggerFactory.CreateLogger(_seriConfig, appConfig.ConnectionStringKey, appConfig.LogsTableName);
+              logger =   SqlServerLoggerFactory.CreateLogger(seriConfig, appConfig.ConnectionStringKey, appConfig.LogsTableName);
             }
             else if (appConfig.LoggerOutput == Enums.LogOutputDestination.Console)
             {
-               logger= ConsoleLoggerFactory.CreateLogger(_seriConfig);
+               logger= ConsoleLoggerFactory.CreateLogger(seriConfig);
             }
 
         }
@@ -160,10 +156,28 @@ namespace ESFA.DC.Logging.SeriLogging
                   .ForContext("LineNumber", lineNumber)
                   .ForContext("TimeStampUTC", DateTime.Now.ToUniversalTime());
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    logger.Dispose();
+                }
+
+                disposedValue = true;
+            }
+        }
+
         public void Dispose()
         {
-            logger.Dispose();
+            Dispose(true);
         }
+        #endregion
 
     }
 }

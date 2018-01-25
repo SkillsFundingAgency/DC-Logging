@@ -13,14 +13,14 @@ using System.Threading.Tasks;
 
 namespace ESFA.DC.Logging.SeriLogging
 {
-    public class SqlServerLoggerFactory  
+    public static class SqlServerLoggerFactory  
     {
        
         public static Logger CreateLogger(LoggerConfiguration seriConfig, string connectionStringKey, string tableName)
         {
             if (string.IsNullOrEmpty(connectionStringKey))
             {
-                throw new ArgumentNullException("There is no connection string key defined for SQL server logging database");
+                throw new ArgumentNullException("There is no connectionStringKey defined for SQL server logging database");
             }
 
             ColumnOptions columnOptions = SetupColumnOptions();

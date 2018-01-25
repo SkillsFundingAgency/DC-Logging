@@ -21,7 +21,6 @@ namespace ESFA.DC.Logging.IntergrationTests
             var connectionStringBuilder = new SqlConnectionStringBuilder(connectionString);
             AppConnectionString = connectionStringBuilder.ToString();
 
-            var databaseName = connectionStringBuilder.InitialCatalog;
             connectionStringBuilder.InitialCatalog = "master";
 
             MasterConnectionString = connectionStringBuilder.ToString();
@@ -37,7 +36,7 @@ namespace ESFA.DC.Logging.IntergrationTests
 
                 using (var command = connection.CreateCommand())
                 {
-                    command.CommandText = string.Format($"select * from information_schema.tables where table_name = '{tableName}'", tableName);
+                    command.CommandText = $"select * from information_schema.tables where table_name = '{tableName}'";
                     using (var reader = command.ExecuteReader())
                     {
                         return reader.HasRows;
@@ -57,7 +56,7 @@ namespace ESFA.DC.Logging.IntergrationTests
 
                 using (var command = connection.CreateCommand())
                 {
-                    command.CommandText = string.Format("select * from master.dbo.sysdatabases where name='AppLogs'");
+                    command.CommandText = "select * from master.dbo.sysdatabases where name='AppLogs'";
                     using (var reader = command.ExecuteReader())
                     {
                         return reader.HasRows;
@@ -101,7 +100,7 @@ namespace ESFA.DC.Logging.IntergrationTests
         public void DropIfExists()
         {
 
-            if (CheckIfDatabaseExists() && _isDatabaseCratedByTests == true)
+            if (CheckIfDatabaseExists() && _isDatabaseCratedByTests)
             {
                 ExecuteCommand("ALTER DATABASE AppLogs SET SINGLE_USER WITH ROLLBACK IMMEDIATE",MasterConnectionString);
                 ExecuteCommand("DROP DATABASE AppLogs",MasterConnectionString);

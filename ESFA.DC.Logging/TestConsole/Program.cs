@@ -20,24 +20,18 @@ namespace TestConsole
             var builder = ConfigureBuilder();
             var container = builder.Build();
             var scope = container.BeginLifetimeScope();
-            //using (var scope = container.BeginLifetimeScope())
-            //{
-              logger = container.Resolve<ILogger>();
-
-
-                logger.LogDebug("some debug");
-                logger.LogInfo("some info");
-                logger.LogWarning("some warn");
-                logger.LogError("some error",new Exception("there was an exception"));
-                logger.LogInfo("test info {@builder}", new object[]{builder});
-            //    logger.LogInfo("job id","test info {@builder}",parameters: new object[] { builder });   
+            
+            logger = container.Resolve<ILogger>();
+            
+            logger.LogDebug("some debug");
+            logger.LogInfo("some info");
+            logger.LogWarning("some warn");
+            logger.LogError("some error",new Exception("there was an exception"));
+            logger.LogInfo("test info {@builder}", new object[]{builder});
+          
 
             TestStackTraceLevel1();
-            //logger.LogWarning("test warn");
-            //logger.LogError("test error data {@container}",new Exception("exception occured"), container);
-            //}
-
-            //Thread.Sleep(1000);
+          
             Console.ReadLine();
 
         }

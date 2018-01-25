@@ -15,14 +15,14 @@ namespace ESFA.DC.Logging.IntergrationTests
 {
     public  class TestBaseFixture : IDisposable
     {
-        public string ConnectionString = "";
-        private DatabaseHelper _databaseHelper = null;
+        private string _connectionString ;
+        private readonly DatabaseHelper _databaseHelper ;
 
         public TestBaseFixture()
         {
 
-            ConnectionString = ConfigurationManager.ConnectionStrings["AppLogs"].ConnectionString;
-            _databaseHelper = new DatabaseHelper(ConnectionString);
+            _connectionString = ConfigurationManager.ConnectionStrings["AppLogs"].ConnectionString;
+            _databaseHelper = new DatabaseHelper(_connectionString);
 
             _databaseHelper.CreateIfNotExists();
 
@@ -35,25 +35,28 @@ namespace ESFA.DC.Logging.IntergrationTests
 
         public bool CheckIfTableExists(string tableName)
         {
-            return _databaseHelper.CheckIfTableExists("Logs", ConnectionString);
+            return _databaseHelper.CheckIfTableExists("Logs", _connectionString);
         }
 
 
-        public ILogger CreateLogger(LogLevel logLevel = LogLevel.Verbose)
+        public ILogger CreateLogger(LogLevel logLevel, string jobId, string taskKey ="")
         {
             DeleteLogs();
 
             var config = new ApplicationLoggerSettings();
             config.ApplicationName = "Test App";
             config.MinimumLogLevel = logLevel;
-            return new SeriLogger(config,"JobId");
+            if (string.IsNullOrEmpty(taskKey))
+                return new SeriLogger(config,jobId);
+            else
+                return new SeriLogger(config, jobId,taskKey);
         }
 
 
         public List<AppLogEntity> GetLogs()
         {
             List<AppLogEntity> result = null;
-            using (var connection = new SqlConnection(ConnectionString))
+            using (var connection = new SqlConnection(_connectionString))
             {
                 connection.Open();
                 result = connection.Query<AppLogEntity>("SELECT * FROM Logs").ToList();
@@ -67,7 +70,7 @@ namespace ESFA.DC.Logging.IntergrationTests
         {
             if (CheckIfTableExists("Logs"))
             {
-                using (var connection = new SqlConnection(ConnectionString))
+                using (var connection = new SqlConnection(_connectionString))
                 {
                     connection.Execute("DELETE FROM Logs");
 

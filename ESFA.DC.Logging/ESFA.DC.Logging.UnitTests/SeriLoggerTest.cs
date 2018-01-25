@@ -31,25 +31,30 @@ namespace ESFA.DC.Logging.UnitTests
             Assert.NotNull(new SeriLogger(config.Object,"Job1"));
         }
 
-        [Fact]
-        public void LoggerErrorDoesNotThrowException()
+        [Theory]
+        [InlineData(Enums.LogOutputDestination.Console)]
+        [InlineData(Enums.LogOutputDestination.SqlServer)]
+        public void LoggerErrorDoesNotThrowExceptionForJob(Enums.LogOutputDestination loggerOutputType)
         {
             var config = new ApplicationLoggerSettings();
-            config.ApplicationName = "Test";
-            config.LoggerOutput = Enums.LogOutputDestination.Console;
+            config.LoggerOutput = loggerOutputType;
 
             Assert.NotNull(new SeriLogger(config, "Job1"));
         }
 
-
-        [Fact]
-        public void LoggerErrorTest()
+        [Theory]
+        [InlineData(Enums.LogOutputDestination.Console)]
+        [InlineData(Enums.LogOutputDestination.SqlServer)]
+        public void LoggerErrorDoesNotThrowExceptionForContext(Enums.LogOutputDestination loggerOutputType)
         {
             var config = new ApplicationLoggerSettings();
-            config.ApplicationName = "Test";
-            config.LoggerOutput = Enums.LogOutputDestination.Console;
+            config.LoggerOutput = loggerOutputType;
 
-            Assert.NotNull(new SeriLogger(config, "Job1"));
+            Assert.NotNull(new SeriLogger(config, "Job1","Context1"));
         }
+
+
+
+
     }
 }

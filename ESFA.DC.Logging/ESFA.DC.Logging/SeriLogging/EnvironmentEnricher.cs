@@ -12,12 +12,12 @@ namespace ESFA.DC.Logging.SeriLogging
 {
     class EnvironmentEnricher : ILogEventEnricher
     {
-        public void Enrich(LogEvent logEvent, ILogEventPropertyFactory pf)
+        public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
         {
             
-            logEvent.AddOrUpdateProperty(pf.CreateProperty("MachineName", Environment.MachineName));
-            logEvent.AddOrUpdateProperty(pf.CreateProperty("ProcessName", Process.GetCurrentProcess().ProcessName));
-            logEvent.AddOrUpdateProperty(pf.CreateProperty("ThreadId", Thread.CurrentThread.ManagedThreadId));
+            logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty("MachineName", Environment.MachineName));
+            logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty("ProcessName", Process.GetCurrentProcess().ProcessName));
+            logEvent.AddOrUpdateProperty(propertyFactory.CreateProperty("ThreadId", Thread.CurrentThread.ManagedThreadId));
             
 
         }
