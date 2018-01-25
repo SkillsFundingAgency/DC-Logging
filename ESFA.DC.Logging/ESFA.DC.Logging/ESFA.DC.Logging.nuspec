@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>$id$</id>
+    <id>ESFA.DC.Logging</id>
     <version>$version$</version>
-    <title>$title$</title>
+    <title>ESFA.DC.Logging</title>
     <authors>DC Team</authors>
     <owners>ESFA</owners>
     <licenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</licenseUrl>
