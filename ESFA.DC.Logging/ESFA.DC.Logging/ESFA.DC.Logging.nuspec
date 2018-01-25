@@ -15,4 +15,11 @@
     <copyright>Copyright 2018</copyright>
     <tags>Tag1 Tag2</tags>
   </metadata>
+  <files>
+    <file src="..\bin\Debug\*.dll" target="bin" />
+    <file src="..\bin\Debug\*.exe" target="bin" />
+    <file src="..\bin\Debug\*.config" target="bin" />
+  </files>
 </package>
+
+
