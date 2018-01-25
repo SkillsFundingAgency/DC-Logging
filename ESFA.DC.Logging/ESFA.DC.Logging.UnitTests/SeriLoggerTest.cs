@@ -19,7 +19,7 @@ namespace ESFA.DC.Logging.UnitTests
         public void LoggerInitialisedWithDefaultConnectionString()
         {
             var config = new Moq.Mock<ApplicationLoggerSettings>();
-            Assert.NotNull(new SeriLogger(config.Object));
+            Assert.NotNull(new SeriLogger(config.Object, "Job1"));
         }
 
         [Fact]
@@ -28,7 +28,7 @@ namespace ESFA.DC.Logging.UnitTests
             var config = new Mock<ApplicationLoggerSettings>();
             config.Object.LoggerOutput = Enums.LogOutputDestination.Console;
 
-            Assert.NotNull(new SeriLogger(config.Object));
+            Assert.NotNull(new SeriLogger(config.Object,"Job1"));
         }
 
         [Fact]
@@ -38,7 +38,7 @@ namespace ESFA.DC.Logging.UnitTests
             config.ApplicationName = "Test";
             config.LoggerOutput = Enums.LogOutputDestination.Console;
 
-            Assert.NotNull(new SeriLogger(config));
+            Assert.NotNull(new SeriLogger(config, "Job1"));
         }
 
 
@@ -49,7 +49,7 @@ namespace ESFA.DC.Logging.UnitTests
             config.ApplicationName = "Test";
             config.LoggerOutput = Enums.LogOutputDestination.Console;
 
-            Assert.NotNull(new SeriLogger(config));
+            Assert.NotNull(new SeriLogger(config, "Job1"));
         }
     }
 }

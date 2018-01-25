@@ -15,11 +15,14 @@ namespace TestConsole
         {
             var config = new ApplicationLoggerSettings();
             config.ApplicationName = "Test app";
+            
             //config.ConnectionStringKey = "AuditLoggingConnectionString";
             config.LoggerOutput = ESFA.DC.Logging.Enums.LogOutputDestination.SqlServer;
 
             builder.RegisterType<SeriLogger>().As<ILogger>()
-                 .WithParameter(new TypedParameter(typeof(ApplicationLoggerSettings), config));
+                 .WithParameter(new TypedParameter(typeof(ApplicationLoggerSettings), config))
+                 .WithParameter("jobId", "JobId1")
+                 .WithParameter("taskKey", "task key 1");      
         }
     }
     }

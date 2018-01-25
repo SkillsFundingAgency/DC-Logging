@@ -67,9 +67,9 @@ namespace ESFA.DC.Logging.IntergrationTests
             }
         }
 
-        private void ExecuteCommand(string commandText)
+        private void ExecuteCommand(string commandText,string connectionString)
         {
-            using (var connection = new SqlConnection(MasterConnectionString))
+            using (var connection = new SqlConnection(connectionString))
             {
                 connection.Open();
 
@@ -87,9 +87,15 @@ namespace ESFA.DC.Logging.IntergrationTests
         {
             if (!CheckIfDatabaseExists())
             {
-                ExecuteCommand("CREATE DATABASE AppLogs");
+                ExecuteCommand("CREATE DATABASE AppLogs",MasterConnectionString);
                 _isDatabaseCratedByTests = true;
             }
+            else
+            {
+                ExecuteCommand("DROP TABLE dbo.Logs",AppConnectionString);
+            }
+
+
         }
 
         public void DropIfExists()
@@ -97,8 +103,8 @@ namespace ESFA.DC.Logging.IntergrationTests
 
             if (CheckIfDatabaseExists() && _isDatabaseCratedByTests == true)
             {
-                ExecuteCommand("ALTER DATABASE AppLogs SET SINGLE_USER WITH ROLLBACK IMMEDIATE");
-                ExecuteCommand("DROP DATABASE AppLogs");
+                ExecuteCommand("ALTER DATABASE AppLogs SET SINGLE_USER WITH ROLLBACK IMMEDIATE",MasterConnectionString);
+                ExecuteCommand("DROP DATABASE AppLogs",MasterConnectionString);
             }
             
         }

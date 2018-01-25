@@ -43,7 +43,7 @@ namespace ESFA.DC.Logging.IntergrationTests
 
             using (var logger = fixture.CreateLogger(Enums.LogLevel.Warning ))
             {
-                logger.LogWarning($"test Warning");
+                logger.LogWarning("test Warning");
             }
 
 
@@ -56,7 +56,7 @@ namespace ESFA.DC.Logging.IntergrationTests
 
             using (var logger = fixture.CreateLogger(Enums.LogLevel.Information))
             {
-                logger.LogInfo($"test Information");
+                logger.LogInfo( "test Information");
             }
 
 
@@ -69,7 +69,7 @@ namespace ESFA.DC.Logging.IntergrationTests
 
             using (var logger = fixture.CreateLogger(Enums.LogLevel.Debug))
             {
-                logger.LogDebug($"test Debug");
+                logger.LogDebug("test Debug");
             }
 
 

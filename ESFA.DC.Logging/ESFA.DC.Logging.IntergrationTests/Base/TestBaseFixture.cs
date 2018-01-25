@@ -46,7 +46,7 @@ namespace ESFA.DC.Logging.IntergrationTests
             var config = new ApplicationLoggerSettings();
             config.ApplicationName = "Test App";
             config.MinimumLogLevel = logLevel;
-            return new SeriLogger(config);
+            return new SeriLogger(config,"JobId");
         }
 
 

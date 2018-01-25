@@ -15,7 +15,7 @@ namespace ESFA.DC.Logging.UnitTests
         [Fact]
         public void SetupSeriLogConfig()
         {
-            var logger = new SeriLogger(new Mock<ApplicationLoggerSettings>().Object);
+            var logger = new SeriLogger(new Mock<ApplicationLoggerSettings>().Object, "Job1");
             var l = logger.ConfigureSerilog();
 
             Assert.NotNull(l);
