@@ -129,7 +129,7 @@ namespace ESFA.DC.Logging.UnitTests
         {
 
             var config = new ApplicationLoggerSettings();
-            config.ApplicationName = "Test App";
+            
             config.LoggerOutput = LogOutputDestination.Console;
             config.MinimumLogLevel = logLevel;
             

@@ -10,7 +10,7 @@ namespace ESFA.DC.Logging
 {
     public interface ILogger :IDisposable
     {
-        void LogError(string message, Exception ex, object[] parameters= null,
+        void LogError(string message , Exception ex = null, object[] parameters= null,
                         [CallerMemberName] string callerName = "",
                         [CallerFilePath] string sourceFile = "",
                         [CallerLineNumber] int lineNumber = 0);
@@ -26,9 +26,8 @@ namespace ESFA.DC.Logging
                         [CallerMemberName] string callerName = "",
                         [CallerFilePath] string sourceFile = "",
                         [CallerLineNumber] int lineNumber = 0);
-
-
         
+
 
     }
 }

@@ -23,9 +23,14 @@ namespace ESFA.DC.Logging.SeriLogging
 
         private string _jobId = string.Empty;
         private string _taskKey = string.Empty;
-        
-      
+
+
         #region Constructors
+
+        public SeriLogger(ApplicationLoggerSettings appConfig)
+        {
+            InitialzeLogger(appConfig, string.Empty, string.Empty);
+        }
 
         public SeriLogger(ApplicationLoggerSettings appConfig, string jobId)
         {
@@ -82,7 +87,6 @@ namespace ESFA.DC.Logging.SeriLogging
             var seriConfig = new LoggerConfiguration()
                     .Enrich.FromLogContext()
                     .Enrich.With<EnvironmentEnricher>()
-                    .Enrich.WithProperty("ApplicationId", _appLoggerSettings.ApplicationName)
                     .Enrich.WithProperty("JobId", _jobId)
                     .Enrich.WithProperty("TaskKey", _taskKey);
 
@@ -164,6 +168,8 @@ namespace ESFA.DC.Logging.SeriLogging
                   .ForContext("TimeStampUTC", DateTime.Now.ToUniversalTime());
         }
 
+     
+
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
 
@@ -173,6 +179,7 @@ namespace ESFA.DC.Logging.SeriLogging
             {
                 if (disposing)
                 {
+                
                     logger.Dispose();
                 }
 

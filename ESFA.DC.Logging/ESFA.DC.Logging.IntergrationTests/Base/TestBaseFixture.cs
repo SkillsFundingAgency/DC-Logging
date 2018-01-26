@@ -46,7 +46,7 @@ namespace ESFA.DC.Logging.IntergrationTests
             DeleteLogs();
 
             var config = new ApplicationLoggerSettings();
-            config.ApplicationName = "Test App";
+            
             config.MinimumLogLevel = logLevel;
             if (string.IsNullOrEmpty(taskKey))
                 return new SeriLogger(config,jobId);

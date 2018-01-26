@@ -41,10 +41,9 @@ namespace ESFA.DC.Logging.SeriLogging
             var columnOptions = new ColumnOptions();
             columnOptions.AdditionalDataColumns = new Collection<DataColumn>{
                         new DataColumn { DataType = typeof(DateTime), ColumnName = "TimeStampUTC" },
-                        new DataColumn { DataType = typeof(string), ColumnName = "ApplicationId" },
-                         new DataColumn { DataType = typeof(string), ColumnName = "MachineName" },
-                         new DataColumn { DataType = typeof(string), ColumnName = "ProcessName" },
-                         new DataColumn { DataType = typeof(string), ColumnName = "CallerName" },
+                        new DataColumn { DataType = typeof(string), ColumnName = "MachineName" },
+                        new DataColumn { DataType = typeof(string), ColumnName = "ProcessName" },
+                        new DataColumn { DataType = typeof(string), ColumnName = "CallerName" },
                         new DataColumn { DataType = typeof(string), ColumnName = "SourceFile" },
                         new DataColumn { DataType = typeof(int), ColumnName = "LineNumber" },
                         new DataColumn { DataType = typeof(string), ColumnName = "JobId" },

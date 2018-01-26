@@ -64,7 +64,6 @@ namespace ESFA.DC.Logging.IntergrationTests
 
             var log = logs.FirstOrDefault();
 
-            Assert.Equal("Test App", log.ApplicationId);
             Assert.Equal($"test {logLevel}", log.Message);
             Assert.Equal(logLevel.ToString(), log.Level);
             Assert.Equal($"test {logLevel}", log.MessageTemplate);

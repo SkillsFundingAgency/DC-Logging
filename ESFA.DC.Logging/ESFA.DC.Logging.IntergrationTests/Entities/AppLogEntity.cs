@@ -16,7 +16,7 @@ namespace ESFA.DC.Logging.IntergrationTests.Models
         public string Level { get; set; }
         public DateTime TimeStampUTC { get; set; }
         public string Exception { get; set; }
-        public string ApplicationId { get; set; }
+        
         public string MachineName { get; set; }
         public string ProcessName { get; set; }
         public string CallerName { get; set; }
