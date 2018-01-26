@@ -14,7 +14,6 @@ namespace TestConsole
         protected override void Load(ContainerBuilder builder)
         {
             var config = new ApplicationLoggerSettings();
-            config.ApplicationName = "Test app";
             
             //config.ConnectionStringKey = "AuditLoggingConnectionString";
             config.LoggerOutput = ESFA.DC.Logging.Enums.LogOutputDestination.SqlServer;

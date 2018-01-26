@@ -20,21 +20,32 @@ namespace TestConsole
         {
 
             var builder = ConfigureBuilder();
-            var container = builder.Build();
-            var scope = container.BeginLifetimeScope();
+            //var container = builder.Build();
+            //var scope = container.BeginLifetimeScope();
+
+
+            using (var logstuff = new LogStuff(builder))
+            {
+                logstuff.DoStuff();
+            }
             
-            logger = container.Resolve<ILogger>();
-            
-            logger.LogDebug("some debug");
-            logger.LogInfo("some info");
-            logger.LogWarning("some warn");
-            logger.LogError("some error",new Exception("there was an exception"));
-            logger.LogInfo("test info {@builder}", new object[]{builder});
+            //    return builder;
+            //})
+
+            //var config = new ApplicationLoggerSettings();
+            //config.ApplicationName = "Test app";
+
+            //logger = container.Resolve<ILogger>();//new SeriLogger(config, "test job"); //
+
+            //logger.LogDebug("some debug");
+            //logger.LogInfo("some info");
+            //logger.LogWarning("some warn");
+            //logger.LogError("some error",new Exception("there was an exception"));
           
 
-            TestStackTraceLevel1();
-          
-            Console.ReadLine();
+           // TestStackTraceLevel1();
+            //logger.CloseAndFlush();
+            //Console.ReadLine();
 
         }
 
