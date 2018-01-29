@@ -50,4 +50,4 @@ using (var logger new ESFA.DC.Logging.SeriLogging.SeriLogger(config, "jobId","ta
 [JobId] [nvarchar](max) NULL,
 [TaskKey] [nvarchar](max) NULL
 ```
-_This structure is for reference only and once component will run first time, it will automatically check if table exists and will create it if needed.
+_This structure is for reference only and once component will run first time, it will automatically check if table exists and will create it if needed._
