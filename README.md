@@ -4,11 +4,11 @@ Repository to capture logs generated from applications. This repository holds so
 
 There are multiple options for log storage and these can be configured on **ApplicationLoggerSettings** which is passed in as a parameter to the constructor;
 
-###### Minimum Setup Required
+##### Minimum Setup Required
 1. For Console logger - None
 2. For SQL server logger - This component relies on an empty database and connection string defined in the client application.
 
-###### ApplicationLoggerSettings
+##### ApplicationLoggerSettings
 
 	
   * LogLevel **MinimumLogLevel** Default is set to Verbose
@@ -21,7 +21,7 @@ There are multiple options for log storage and these can be configured on **Appl
 
 Each instance of logger needs to be disposed off correctly in order to ensure that all the logs are written correctly as logger keeps a buffer and does not write each time you call LogInfor or LogError.
 
-###### Usage
+##### Usage
 Create an instance of ILogger or configure your Ioc to pass that into your class. There are 3 overloads for constructor and logger can be initiated for a particlaur job/task key and each log entry will be created with that jobid/taskkey so each entry can be traced to individual job.
 ```
 var config = new ESFA.DC.Logging.ApplicationLoggerSettings();
@@ -50,3 +50,4 @@ using (var logger new ESFA.DC.Logging.SeriLogging.SeriLogger(config, "jobId","ta
 [JobId] [nvarchar](max) NULL,
 [TaskKey] [nvarchar](max) NULL
 ```
+_This structure is for reference only and once component will run first time, it will automatically check if table exists and will create it if needed.
