@@ -11,7 +11,6 @@ namespace ESFA.DC.Logging
     {
         public LogLevel MinimumLogLevel { get; set; } = LogLevel.Verbose;
         public string ConnectionStringKey { get; set; } = "AppLogs";
-        public string Environment { get; set; } = "DEV";
         public LogOutputDestination LoggerOutput { get; set; } = LogOutputDestination.SqlServer;
         public string LogsTableName { get; set; } = "Logs";
         public bool EnableInternalLogs { get; set; }
