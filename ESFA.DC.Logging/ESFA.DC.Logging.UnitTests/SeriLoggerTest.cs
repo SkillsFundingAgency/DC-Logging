@@ -124,6 +124,13 @@ namespace ESFA.DC.Logging.UnitTests
             
            
         }
+        [Fact]
+        public void TestDefaultLogger()
+        {
+            var logger = LoggerManager.CreateDefaultLogger();
+            Assert.NotNull(logger);
+            Assert.IsType<SeriLogger>(logger);
+        }
 
         private ILogger CreateLogger(LogLevel logLevel, string jobId, string taskKey = "")
         {
