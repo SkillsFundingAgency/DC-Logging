@@ -33,3 +33,20 @@ using (var logger new ESFA.DC.Logging.SeriLogging.SeriLogger(config, "jobId","ta
   logger.LogError("some error", new Exception("there was an exception"));
 }
 ```
+
+##### Table Strtucture for Logs storage
+```
+[Id] [int] IDENTITY(1,1) NOT NULL,
+[Message] [nvarchar](max) NULL,
+[MessageTemplate] [nvarchar](max) NULL,
+[Level] [nvarchar](128) NULL,
+[Exception] [nvarchar](max) NULL,
+[TimeStampUTC] [datetime] NULL,
+[MachineName] [nvarchar](max) NULL,
+[ProcessName] [nvarchar](max) NULL,
+[CallerName] [nvarchar](max) NULL,
+[SourceFile] [nvarchar](max) NULL,
+[LineNumber] [int] NULL,
+[JobId] [nvarchar](max) NULL,
+[TaskKey] [nvarchar](max) NULL
+```
