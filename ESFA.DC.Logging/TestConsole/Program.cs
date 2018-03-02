@@ -23,6 +23,7 @@ namespace TestConsole
             var container = builder.Build();
             var scope = container.BeginLifetimeScope();
 
+            var logger = scope.Resolve<ILogger>();
 
             //using (var logstuff = new LogStuff(builder))
             //{
@@ -34,14 +35,22 @@ namespace TestConsole
 
             var config = new ApplicationLoggerSettings();
             config.EnableInternalLogs = true;
-            using (var logger = new SeriLogger(config, "test job"))
-            {
+            //using (var logger = new SeriLogger(config))
+            //{
+                logger.StartContext("Testjob");
 
                 logger.LogDebug("some debug");
                 logger.LogInfo("some info");
                 logger.LogWarning("some warn");
                 logger.LogError("some error", new Exception("there was an exception"));
-            }
+                logger.ResetContext();
+
+                logger.StartContext("Testjob2");
+                logger.LogWarning("some warn");
+            //}
+
+           // ESFA.DC.Logging.LoggerManager
+            //logger.Flush();
 
             // TestStackTraceLevel1();
             //logger.CloseAndFlush();
