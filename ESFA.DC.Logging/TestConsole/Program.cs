@@ -46,10 +46,14 @@ namespace TestConsole
                 logger.ResetContext();
 
                 logger.StartContext("Testjob2");
-                logger.LogWarning("some warn");
+            logger.StartContext("Testjob3withkey","taskKey");
+            logger.LogWarning("some warn with task key");
+            logger.ResetContext();
+            logger.LogWarning("some warn after reset");
+
             //}
 
-           // ESFA.DC.Logging.LoggerManager
+            // ESFA.DC.Logging.LoggerManager
             //logger.Flush();
 
             // TestStackTraceLevel1();

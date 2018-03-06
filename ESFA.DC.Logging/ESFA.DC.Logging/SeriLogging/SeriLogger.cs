@@ -156,6 +156,7 @@ namespace ESFA.DC.Logging.SeriLogging
         public void ResetContext()
         {
             _jobId = string.Empty;
+            _taskKey= string.Empty;
         }
         #endregion Logger functions
 

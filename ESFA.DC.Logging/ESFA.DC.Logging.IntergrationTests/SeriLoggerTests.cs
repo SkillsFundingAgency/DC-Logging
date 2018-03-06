@@ -1,15 +1,8 @@
-﻿using Dapper;
-using ESFA.DC.Logging.IntergrationTests.Models;
-using ESFA.DC.Logging.SeriLogging;
+﻿using ESFA.DC.Logging.SeriLogging;
 using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace ESFA.DC.Logging.IntergrationTests
@@ -17,7 +10,7 @@ namespace ESFA.DC.Logging.IntergrationTests
     [ExcludeFromCodeCoverageAttribute]
     public class SeriLoggerTests : IClassFixture<TestBaseFixture>
     {
-        readonly TestBaseFixture _fixture = null;
+        private readonly TestBaseFixture _fixture = null;
 
         public SeriLoggerTests(TestBaseFixture fixture)
         {
@@ -25,8 +18,8 @@ namespace ESFA.DC.Logging.IntergrationTests
         }
 
         [Theory]
-        [InlineData(Enums.LogLevel.Error,"JobId")]
-        [InlineData(Enums.LogLevel.Error,"JobId","taskkey")]
+        [InlineData(Enums.LogLevel.Error, "JobId")]
+        [InlineData(Enums.LogLevel.Error, "JobId", "taskkey")]
         [InlineData(Enums.LogLevel.Debug, "JobId")]
         [InlineData(Enums.LogLevel.Debug, "JobId", "taskkey")]
         [InlineData(Enums.LogLevel.Warning, "JobId")]
@@ -35,27 +28,29 @@ namespace ESFA.DC.Logging.IntergrationTests
         [InlineData(Enums.LogLevel.Information, "JobId", "taskkey")]
         public void TestLogs(Enums.LogLevel logLevel, string jobId, string taskKey = "")
         {
-
-            using (var logger = _fixture.CreateLogger(logLevel,jobId,taskKey))
+            using (var logger = _fixture.CreateLogger(logLevel, jobId, taskKey))
             {
                 switch (logLevel)
                 {
                     case Enums.LogLevel.Error:
                         logger.LogError($"test Error", new Exception("exception occured"));
                         break;
+
                     case Enums.LogLevel.Debug:
                         logger.LogDebug($"test Debug");
                         break;
+
                     case Enums.LogLevel.Warning:
                         logger.LogWarning($"test Warning");
                         break;
+
                     case Enums.LogLevel.Information:
                         logger.LogInfo($"test Information");
                         break;
+
                     default:
                         break;
                 }
-                
             }
 
             var logs = _fixture.GetLogs();
@@ -80,13 +75,51 @@ namespace ESFA.DC.Logging.IntergrationTests
             Assert.Equal(jobId, log.JobId);
             Assert.Contains(taskKey, log.TaskKey);
 
-            if (logLevel ==Enums.LogLevel.Error)
+            if (logLevel == Enums.LogLevel.Error)
             {
                 Assert.Equal("System.Exception: exception occured", log.Exception);
             }
         }
 
-               
+        [Fact]
+        public void TestJobContextLogs()
+        {
+            _fixture.DeleteLogs();
+            using (var logger = new SeriLogger(new ApplicationLoggerSettings()))
+            {
+                logger.StartContext("jobId1");
+                logger.LogDebug($"test Debug");
+            }
 
+            var logs = _fixture.GetLogs();
+            Assert.NotNull(logs);
+            Assert.True(logs.Count == 1);
+
+            var log = logs.FirstOrDefault();
+
+            Assert.Equal("test Debug", log.Message);
+            Assert.Equal("jobId1", log.JobId);
+        }
+
+        [Fact]
+        public void TestJobWithKeyContextLogs()
+        {
+            _fixture.DeleteLogs();
+            using (var logger = new SeriLogger(new ApplicationLoggerSettings()))
+            {
+                logger.StartContext("jobId1", "taskkey1");
+                logger.LogDebug($"test Debug");
+            }
+
+            var logs = _fixture.GetLogs();
+            Assert.NotNull(logs);
+            Assert.True(logs.Count == 1);
+
+            var log = logs.FirstOrDefault();
+
+            Assert.Equal("test Debug", log.Message);
+            Assert.Equal("jobId1", log.JobId);
+            Assert.Equal("taskkey1", log.TaskKey);
+        }
     }
 }

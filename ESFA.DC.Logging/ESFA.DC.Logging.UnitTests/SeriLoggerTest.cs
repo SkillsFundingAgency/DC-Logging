@@ -1,21 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xunit;
-using Moq;
-
+﻿using ESFA.DC.Logging.Enums;
 using ESFA.DC.Logging.SeriLogging;
-using ESFA.DC.Logging.Enums;
+using Moq;
+using System;
+using Xunit;
 
 namespace ESFA.DC.Logging.UnitTests
 {
-
     public class SeriLoggerTest
     {
-
-
         [Fact]
         public void LoggerInitialisedWithDefaultConnectionString()
         {
@@ -54,7 +46,6 @@ namespace ESFA.DC.Logging.UnitTests
             Assert.NotNull(new SeriLogger(config, "Job1", "Context1"));
         }
 
-
         [Theory]
         [InlineData(Enums.LogLevel.Verbose)]
         [InlineData(Enums.LogLevel.Debug)]
@@ -82,17 +73,16 @@ namespace ESFA.DC.Logging.UnitTests
             }
         }
 
-
         [Theory]
-        [InlineData(Enums.LogLevel.Error,false)]
-        [InlineData(Enums.LogLevel.Error,true)]
+        [InlineData(Enums.LogLevel.Error, false)]
+        [InlineData(Enums.LogLevel.Error, true)]
         [InlineData(Enums.LogLevel.Debug, false)]
         [InlineData(Enums.LogLevel.Debug, true)]
         [InlineData(Enums.LogLevel.Information, false)]
         [InlineData(Enums.LogLevel.Information, true)]
         [InlineData(Enums.LogLevel.Warning, false)]
         [InlineData(Enums.LogLevel.Warning, true)]
-        public void TestLogs(Enums.LogLevel logLevel, bool withObject  )
+        public void TestLogs(Enums.LogLevel logLevel, bool withObject)
         {
             Action action = null;
 
@@ -103,15 +93,19 @@ namespace ESFA.DC.Logging.UnitTests
                     case Enums.LogLevel.Error:
                         action = () => logger.LogError($"test Error", new Exception("exception occured"), withObject ? new object[] { new object() } : null);
                         break;
+
                     case Enums.LogLevel.Debug:
                         action = () => logger.LogDebug($"test Debug", withObject ? new object[] { new object() } : null);
                         break;
+
                     case Enums.LogLevel.Warning:
                         action = () => logger.LogWarning($"test Warning", withObject ? new object[] { new object() } : null);
                         break;
+
                     case Enums.LogLevel.Information:
                         action = () => logger.LogInfo($"test Information", withObject ? new object[] { new object() } : null);
                         break;
+
                     default:
                         break;
                 }
@@ -119,11 +113,9 @@ namespace ESFA.DC.Logging.UnitTests
                 //check if there was an exception or not while executing the action
                 var ex = Record.Exception(action);
                 Assert.Null(ex);
-
             }
-            
-           
         }
+
         [Fact]
         public void TestDefaultLogger()
         {
@@ -134,15 +126,41 @@ namespace ESFA.DC.Logging.UnitTests
 
         private ILogger CreateLogger(LogLevel logLevel, string jobId, string taskKey = "")
         {
-
             var config = new ApplicationLoggerSettings();
-            
+
             config.LoggerOutput = LogOutputDestination.Console;
             config.MinimumLogLevel = logLevel;
-            
-            return new SeriLogger(config, jobId,taskKey);
-          
+
+            return new SeriLogger(config, jobId, taskKey);
         }
 
+        [Fact]
+        public void StartContextJobTest()
+        {
+            var config = new ApplicationLoggerSettings();
+            var logger = new SeriLogger(config);
+            
+            var ex = Record.Exception(()=> logger.StartContext("JobId1"));
+            Assert.Null(ex);
+        }
+        [Fact]
+        public void StartContextJobWithKeyTest()
+        {
+            var config = new ApplicationLoggerSettings();
+            var logger = new SeriLogger(config);
+
+            var ex = Record.Exception(() => logger.StartContext("JobId1","taskKey"));
+            Assert.Null(ex);
+        }
+
+        [Fact]
+        public void ResetContextTest()
+        {
+            var config = new ApplicationLoggerSettings();
+            var logger = new SeriLogger(config);
+
+            var ex = Record.Exception(() => logger.ResetContext());
+            Assert.Null(ex);
+        }
     }
 }

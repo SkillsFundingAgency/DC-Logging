@@ -41,7 +41,7 @@ namespace ESFA.DC.Logging.IntergrationTests
         }
 
 
-        public ILogger CreateLogger(LogLevel logLevel, string jobId, string taskKey ="")
+        public ILogger CreateLogger(LogLevel logLevel, string jobId ="", string taskKey ="")
         {
             DeleteLogs();
 
