@@ -123,6 +123,27 @@ namespace ESFA.DC.Logging.UnitTests
             Assert.NotNull(logger);
             Assert.IsType<SeriLogger>(logger);
         }
+        [Fact]
+        public void TestConnectionStringLogger()
+        {
+            var logger = LoggerManager.CreateLogger("test connection string");
+            Assert.NotNull(logger);
+            Assert.IsType<SeriLogger>(logger);
+        }
+        [Fact]
+        public void TestConnectionStringWithJobLogger()
+        {
+            var logger = LoggerManager.CreateLogger("test connection string","jobid1");
+            Assert.NotNull(logger);
+            Assert.IsType<SeriLogger>(logger);
+        }
+        [Fact]
+        public void TestConnectionStringWithJobAndTaskLogger()
+        {
+            var logger = LoggerManager.CreateLogger("test connection string", "jobid1","taskKey");
+            Assert.NotNull(logger);
+            Assert.IsType<SeriLogger>(logger);
+        }
 
         private ILogger CreateLogger(LogLevel logLevel, string jobId, string taskKey = "")
         {

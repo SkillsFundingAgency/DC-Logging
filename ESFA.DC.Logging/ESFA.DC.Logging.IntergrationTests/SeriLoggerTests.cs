@@ -82,10 +82,28 @@ namespace ESFA.DC.Logging.IntergrationTests
         }
 
         [Fact]
+        public void TestLogsConnectionString()
+        {
+            _fixture.DeleteLogs();
+
+            using (var logger = LoggerManager.CreateLogger(@"Server=(localdb)\MSSQLLocalDB;Database=AppLogs;Trusted_Connection=True"))
+            {
+                logger.LogDebug("test Debug");
+            }
+
+            var logs = _fixture.GetLogs();
+            Assert.NotNull(logs);
+            Assert.True(logs.Count == 1);
+
+            var log = logs.FirstOrDefault();
+            Assert.Equal("test Debug", log.Message);
+        }
+
+        [Fact]
         public void TestJobContextLogs()
         {
             _fixture.DeleteLogs();
-            using (var logger = new SeriLogger(new ApplicationLoggerSettings()))
+            using (var logger = LoggerManager.CreateDefaultLogger())
             {
                 logger.StartContext("jobId1");
                 logger.LogDebug($"test Debug");
@@ -105,7 +123,7 @@ namespace ESFA.DC.Logging.IntergrationTests
         public void TestJobWithKeyContextLogs()
         {
             _fixture.DeleteLogs();
-            using (var logger = new SeriLogger(new ApplicationLoggerSettings()))
+            using (var logger = LoggerManager.CreateDefaultLogger())
             {
                 logger.StartContext("jobId1", "taskkey1");
                 logger.LogDebug($"test Debug");

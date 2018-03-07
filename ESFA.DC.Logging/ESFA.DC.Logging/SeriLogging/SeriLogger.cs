@@ -47,7 +47,7 @@ namespace ESFA.DC.Logging.SeriLogging
 
             if (appConfig.LoggerOutput == Enums.LogOutputDestination.SqlServer)
             {
-                _logger = SqlServerLoggerFactory.CreateLogger(seriConfig, appConfig.ConnectionStringKey, appConfig.LogsTableName);
+                _logger = SqlServerLoggerFactory.CreateLogger(seriConfig, appConfig.ConnectionString, appConfig.LogsTableName);
             }
             else if (appConfig.LoggerOutput == Enums.LogOutputDestination.Console)
             {
