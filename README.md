@@ -32,6 +32,8 @@ using (var logger new ESFA.DC.Logging.SeriLogging.SeriLogger(config, "jobId","ta
   logger.LogError("some error", new Exception("there was an exception"));
 }
 ```
+Alternatively you can use the new LoggerManager static class which has helper methods to create the logger instances. If you don't create a logger instance with job and task key, you can use 'StartContext' method 
+after creating logger instance and all the logs will be written with that job/task context set by the method.
 
 ##### Table Strtucture for Logs storage
 ```
