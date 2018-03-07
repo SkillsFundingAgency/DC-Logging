@@ -81,24 +81,7 @@ namespace ESFA.DC.Logging.IntergrationTests
             }
         }
 
-        [Fact]
-        public void TestLogsConnectionString()
-        {
-            _fixture.DeleteLogs();
-
-            using (var logger = LoggerManager.CreateLogger(@"Server=(localdb)\MSSQLLocalDB;Database=AppLogs;Trusted_Connection=True"))
-            {
-                logger.LogDebug("test Debug");
-            }
-
-            var logs = _fixture.GetLogs();
-            Assert.NotNull(logs);
-            Assert.True(logs.Count == 1);
-
-            var log = logs.FirstOrDefault();
-            Assert.Equal("test Debug", log.Message);
-        }
-
+       
         [Fact]
         public void TestJobContextLogs()
         {
