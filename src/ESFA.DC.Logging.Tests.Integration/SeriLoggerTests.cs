@@ -80,7 +80,6 @@ namespace ESFA.DC.Logging.IntergrationTests
             }
         }
 
-       
         [Fact]
         public void TestJobContextLogs()
         {

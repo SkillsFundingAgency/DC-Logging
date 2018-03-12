@@ -6,24 +6,22 @@ namespace ESFA.DC.Logging.IntergrationTests
     [ExcludeFromCodeCoverageAttribute]
     public class DatabaseHelper
     {
-        public string MasterConnectionString { get; protected set; }
-        public string AppConnectionString { get; protected set; }
-        private bool _isDatabaseCratedByTests = false;
+        private bool _isDatabaseCratedByTests;
 
         public DatabaseHelper(string connectionString)
         {
-            
             var connectionStringBuilder = new SqlConnectionStringBuilder(connectionString);
             AppConnectionString = connectionStringBuilder.ToString();
 
             connectionStringBuilder.InitialCatalog = "master";
 
             MasterConnectionString = connectionStringBuilder.ToString();
-
         }
 
+        public string MasterConnectionString { get; protected set; }
 
-        [SuppressMessage("Security", "S3649")]
+        public string AppConnectionString { get; protected set; }
+
         public bool CheckIfTableExists(string tableName, string connectionString)
         {
             using (var connection = new SqlConnection(connectionString))
@@ -32,38 +30,38 @@ namespace ESFA.DC.Logging.IntergrationTests
 
                 using (var command = connection.CreateCommand())
                 {
-                    
                     command.CommandText = $"select * from information_schema.tables where table_name = '{tableName}'";
                     using (var reader = command.ExecuteReader())
                     {
                         return reader.HasRows;
                     }
-
                 }
             }
         }
-            
 
-        private bool CheckIfDatabaseExists()
+        public void CreateIfNotExists()
         {
-            
-            using (var connection = new SqlConnection(MasterConnectionString))
+            if (!CheckIfDatabaseExists())
             {
-                connection.Open();
-
-                using (var command = connection.CreateCommand())
-                {
-                    command.CommandText = "select * from master.dbo.sysdatabases where name='AppLogs'";
-                    using (var reader = command.ExecuteReader())
-                    {
-                        return reader.HasRows;
-                    }
-                 
-                }
+                ExecuteCommand("CREATE DATABASE AppLogs", MasterConnectionString);
+                _isDatabaseCratedByTests = true;
+            }
+            else
+            {
+                ExecuteCommand("DROP TABLE dbo.Logs", AppConnectionString);
             }
         }
 
-        private void ExecuteCommand(string commandText,string connectionString)
+        public void DropIfExists()
+        {
+            if (CheckIfDatabaseExists() && _isDatabaseCratedByTests)
+            {
+                ExecuteCommand("ALTER DATABASE AppLogs SET SINGLE_USER WITH ROLLBACK IMMEDIATE", MasterConnectionString);
+                ExecuteCommand("DROP DATABASE AppLogs", MasterConnectionString);
+            }
+        }
+
+        private void ExecuteCommand(string commandText, string connectionString)
         {
             using (var connection = new SqlConnection(connectionString))
             {
@@ -77,34 +75,21 @@ namespace ESFA.DC.Logging.IntergrationTests
             }
         }
 
-     
-
-        public void CreateIfNotExists()
+        private bool CheckIfDatabaseExists()
         {
-            if (!CheckIfDatabaseExists())
+            using (var connection = new SqlConnection(MasterConnectionString))
             {
-                ExecuteCommand("CREATE DATABASE AppLogs",MasterConnectionString);
-                _isDatabaseCratedByTests = true;
-            }
-            else
-            {
-                ExecuteCommand("DROP TABLE dbo.Logs",AppConnectionString);
-            }
+                connection.Open();
 
-
+                using (var command = connection.CreateCommand())
+                {
+                    command.CommandText = "select * from master.dbo.sysdatabases where name='AppLogs'";
+                    using (var reader = command.ExecuteReader())
+                    {
+                        return reader.HasRows;
+                    }
+                }
+            }
         }
-
-        public void DropIfExists()
-        {
-
-            if (CheckIfDatabaseExists() && _isDatabaseCratedByTests)
-            {
-                ExecuteCommand("ALTER DATABASE AppLogs SET SINGLE_USER WITH ROLLBACK IMMEDIATE",MasterConnectionString);
-                ExecuteCommand("DROP DATABASE AppLogs",MasterConnectionString);
-            }
-            
-        }
-
-       
     }
 }
