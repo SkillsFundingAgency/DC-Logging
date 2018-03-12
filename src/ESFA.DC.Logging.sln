@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.Logging", "ESFA.DC.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.Logging.Tests", "ESFA.DC.Logging.Tests\ESFA.DC.Logging.Tests.csproj", "{09D292CC-3179-4E5E-8E8F-4589761212C1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ESFA.DC.Logging.Tests.Integration", "ESFA.DC.Logging.Tests.Integration\ESFA.DC.Logging.Tests.Integration.csproj", "{6CB2E3D4-A29E-40A1-87F9-19CCB19DE378}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{09D292CC-3179-4E5E-8E8F-4589761212C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09D292CC-3179-4E5E-8E8F-4589761212C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09D292CC-3179-4E5E-8E8F-4589761212C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CB2E3D4-A29E-40A1-87F9-19CCB19DE378}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CB2E3D4-A29E-40A1-87F9-19CCB19DE378}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CB2E3D4-A29E-40A1-87F9-19CCB19DE378}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CB2E3D4-A29E-40A1-87F9-19CCB19DE378}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
