@@ -1,8 +1,8 @@
-﻿using Serilog;
-using Serilog.Core;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using Serilog;
+using Serilog.Core;
 
 namespace ESFA.DC.Logging.SeriLogging
 {
@@ -13,8 +13,7 @@ namespace ESFA.DC.Logging.SeriLogging
 
         private string _jobId = string.Empty;
         private string _taskKey = string.Empty;
-
-        #region Constructors
+        private bool _disposedValue;
 
         public SeriLogger(ApplicationLoggerSettings appConfig)
         {
@@ -31,42 +30,8 @@ namespace ESFA.DC.Logging.SeriLogging
             InitialzeLogger(appConfig, jobId, taskKey);
         }
 
-        private void InitialzeLogger(ApplicationLoggerSettings appConfig, string jobId, string taskKey)
-        {
-            if (appConfig.EnableInternalLogs)
-            {
-                Serilog.Debugging.SelfLog.Enable(msg => Debug.WriteLine(msg));
-                Serilog.Debugging.SelfLog.Enable(Console.Error);
-            }
-
-            _appLoggerSettings = appConfig;
-            _jobId = jobId;
-            _taskKey = taskKey;
-
-            var seriConfig = ConfigureSerilog();
-
-            if (appConfig.LoggerOutput == Enums.LogOutputDestination.SqlServer)
-            {
-                _logger = SqlServerLoggerFactory.CreateLogger(seriConfig, appConfig.ConnectionString, appConfig.LogsTableName);
-            }
-            else if (appConfig.LoggerOutput == Enums.LogOutputDestination.Console)
-            {
-                _logger = ConsoleLoggerFactory.CreateLogger(seriConfig);
-            }
-        }
-
-        #endregion Constructors
-
-        #region Public Methods
-
-        /// <summary>
-        /// Creates the _logger configuration for serilog
-        /// </summary>
-        /// <param name="appConfig"></param>
-        /// <returns></returns>
         public LoggerConfiguration ConfigureSerilog()
         {
-            //setup the configuartion
             var seriConfig = new LoggerConfiguration()
                 .Enrich.FromLogContext()
                 .Enrich.With<EnvironmentEnricher>();
@@ -105,41 +70,43 @@ namespace ESFA.DC.Logging.SeriLogging
             return seriConfig;
         }
 
-        #endregion Public Methods
-
-        #region Logger functions
-
-        public void LogError(string message,
-                            Exception ex,
-                            object[] parameters = null,
-                            [CallerMemberName] string callerName = "",
-                            [CallerFilePath] string sourceFile = "",
-                            [CallerLineNumber] int lineNumber = 0)
+        public void LogError(
+            string message,
+            Exception ex,
+            object[] parameters = null,
+            [CallerMemberName] string callerName = "",
+            [CallerFilePath] string sourceFile = "",
+            [CallerLineNumber] int lineNumber = 0)
         {
             AddContext(callerName, sourceFile, lineNumber).Error(ex, message, parameters);
         }
 
-        public void LogWarning(string message,
-                            object[] parameters = null,
-                            [CallerMemberName] string callerName = "",
-                            [CallerFilePath] string sourceFile = "",
-                            [CallerLineNumber] int lineNumber = 0)
+        public void LogWarning(
+            string message,
+            object[] parameters = null,
+            [CallerMemberName] string callerName = "",
+            [CallerFilePath] string sourceFile = "",
+            [CallerLineNumber] int lineNumber = 0)
         {
             AddContext(callerName, sourceFile, lineNumber).Warning(message, parameters);
         }
 
-        public void LogDebug(string message, object[] parameters = null,
-                            [CallerMemberName] string callerName = "",
-                            [CallerFilePath] string sourceFile = "",
-                            [CallerLineNumber] int lineNumber = 0)
+        public void LogDebug(
+            string message,
+            object[] parameters = null,
+            [CallerMemberName] string callerName = "",
+            [CallerFilePath] string sourceFile = "",
+            [CallerLineNumber] int lineNumber = 0)
         {
             AddContext(callerName, sourceFile, lineNumber).Debug(message, parameters);
         }
 
-        public void LogInfo(string message, object[] parameters = null,
-                            [CallerMemberName] string callerName = "",
-                            [CallerFilePath] string sourceFile = "",
-                            [CallerLineNumber] int lineNumber = 0)
+        public void LogInfo(
+            string message,
+            object[] parameters = null,
+            [CallerMemberName] string callerName = "",
+            [CallerFilePath] string sourceFile = "",
+            [CallerLineNumber] int lineNumber = 0)
         {
             AddContext(callerName, sourceFile, lineNumber).Information(message, parameters);
         }
@@ -148,17 +115,60 @@ namespace ESFA.DC.Logging.SeriLogging
         {
             _jobId = jobId;
         }
+
         public void StartContext(string jobId, string taskKey)
         {
             _jobId = jobId;
             _taskKey = taskKey;
         }
+
         public void ResetContext()
         {
             _jobId = string.Empty;
-            _taskKey= string.Empty;
+            _taskKey = string.Empty;
         }
-        #endregion Logger functions
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    _logger.Dispose();
+                }
+
+                _disposedValue = true;
+            }
+        }
+
+        private void InitialzeLogger(ApplicationLoggerSettings appConfig, string jobId, string taskKey)
+        {
+            if (appConfig.EnableInternalLogs)
+            {
+                Serilog.Debugging.SelfLog.Enable(msg => Debug.WriteLine(msg));
+                Serilog.Debugging.SelfLog.Enable(Console.Error);
+            }
+
+            _appLoggerSettings = appConfig;
+            _jobId = jobId;
+            _taskKey = taskKey;
+
+            var seriConfig = ConfigureSerilog();
+
+            if (appConfig.LoggerOutput == Enums.LogOutputDestination.SqlServer)
+            {
+                _logger = SqlServerLoggerFactory.CreateLogger(seriConfig, appConfig.ConnectionString, appConfig.LogsTableName);
+            }
+            else if (appConfig.LoggerOutput == Enums.LogOutputDestination.Console)
+            {
+                _logger = ConsoleLoggerFactory.CreateLogger(seriConfig);
+            }
+        }
 
         private Serilog.ILogger AddContext(string callerName, string sourceFile, int lineNumber)
         {
@@ -169,29 +179,5 @@ namespace ESFA.DC.Logging.SeriLogging
                     .ForContext("JobId", _jobId)
                     .ForContext("TaskKey", _taskKey);
         }
-
-        #region IDisposable Support
-
-        private bool disposedValue = false; // To detect redundant calls
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!disposedValue)
-            {
-                if (disposing)
-                {
-                    _logger.Dispose();
-                }
-
-                disposedValue = true;
-            }
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-        }
-
-        #endregion IDisposable Support
     }
 }

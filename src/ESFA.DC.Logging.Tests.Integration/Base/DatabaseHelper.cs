@@ -1,12 +1,5 @@
-﻿using Dapper;
-using ESFA.DC.Logging.IntergrationTests.Models;
-using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
+﻿using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ESFA.DC.Logging.IntergrationTests
 {

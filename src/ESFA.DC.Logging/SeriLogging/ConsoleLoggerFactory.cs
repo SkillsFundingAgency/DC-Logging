@@ -1,7 +1,5 @@
-﻿using ESFA.DC.Logging.Enums;
-using Serilog;
+﻿using Serilog;
 using Serilog.Core;
-using System;
 
 namespace ESFA.DC.Logging.SeriLogging
 {
@@ -9,12 +7,9 @@ namespace ESFA.DC.Logging.SeriLogging
     {
         public static Logger CreateLogger(LoggerConfiguration seriConfig)
         {
-            
             return seriConfig.WriteTo
                 .Console()
                 .CreateLogger();
-
         }
-
     }
 }
