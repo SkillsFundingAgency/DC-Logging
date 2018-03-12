@@ -2,11 +2,12 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using ESFA.DC.Logging.Tests.Integration.Base;
 using Xunit;
 
-namespace ESFA.DC.Logging.IntergrationTests
+namespace ESFA.DC.Logging.Tests.Integration
 {
-    [ExcludeFromCodeCoverageAttribute]
+    [ExcludeFromCodeCoverage]
     public class SeriLoggerTests : IClassFixture<TestBaseFixture>
     {
         private readonly TestBaseFixture _fixture = null;

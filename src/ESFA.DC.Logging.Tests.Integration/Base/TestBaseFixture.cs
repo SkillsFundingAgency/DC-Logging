@@ -6,12 +6,12 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dapper;
 using ESFA.DC.Logging.Enums;
-using ESFA.DC.Logging.IntergrationTests.Models;
 using ESFA.DC.Logging.SeriLogging;
+using ESFA.DC.Logging.Tests.Integration.Entities;
 
-namespace ESFA.DC.Logging.IntergrationTests
+namespace ESFA.DC.Logging.Tests.Integration.Base
 {
-    [ExcludeFromCodeCoverageAttribute]
+    [ExcludeFromCodeCoverage]
     public class TestBaseFixture : IDisposable
     {
         private readonly string _connectionString;

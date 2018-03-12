@@ -1,9 +1,9 @@
 ﻿using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 
-namespace ESFA.DC.Logging.IntergrationTests
+namespace ESFA.DC.Logging.Tests.Integration.Base
 {
-    [ExcludeFromCodeCoverageAttribute]
+    [ExcludeFromCodeCoverage]
     public class DatabaseHelper
     {
         private bool _isDatabaseCratedByTests;

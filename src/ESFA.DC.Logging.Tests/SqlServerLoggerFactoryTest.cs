@@ -4,7 +4,7 @@ using Moq;
 using Serilog;
 using Xunit;
 
-namespace ESFA.DC.Logging.UnitTests
+namespace ESFA.DC.Logging.Tests
 {
     public class SqlServerLoggerFactoryTest
     {

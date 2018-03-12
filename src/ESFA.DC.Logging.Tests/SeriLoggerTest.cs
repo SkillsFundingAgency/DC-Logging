@@ -4,7 +4,7 @@ using ESFA.DC.Logging.SeriLogging;
 using Moq;
 using Xunit;
 
-namespace ESFA.DC.Logging.UnitTests
+namespace ESFA.DC.Logging.Tests
 {
     public class SeriLoggerTest
     {

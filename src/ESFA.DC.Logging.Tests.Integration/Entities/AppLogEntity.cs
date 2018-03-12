@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 
-namespace ESFA.DC.Logging.IntergrationTests.Models
+namespace ESFA.DC.Logging.Tests.Integration.Entities
 {
-    [ExcludeFromCodeCoverageAttribute]
+    [ExcludeFromCodeCoverage]
     public class AppLogEntity
     {
         public int Id { get; set; }
