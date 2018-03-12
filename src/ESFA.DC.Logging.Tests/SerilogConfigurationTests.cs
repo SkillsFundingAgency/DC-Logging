@@ -1,5 +1,4 @@
-﻿
-using ESFA.DC.Logging.SeriLogging;
+﻿using ESFA.DC.Logging.SeriLogging;
 using Moq;
 using Xunit;
 
@@ -14,17 +13,15 @@ namespace ESFA.DC.Logging.UnitTests
             var l = logger.ConfigureSerilog();
 
             Assert.NotNull(l);
-            
         }
 
         [Fact]
         public void SetupSeriLogConfigForTaskKey()
         {
-            var logger = new SeriLogger(new Mock<ApplicationLoggerSettings>().Object, "Job1","taskkey");
+            var logger = new SeriLogger(new Mock<ApplicationLoggerSettings>().Object, "Job1", "taskkey");
             var l = logger.ConfigureSerilog();
 
             Assert.NotNull(l);
-
         }
     }
 }

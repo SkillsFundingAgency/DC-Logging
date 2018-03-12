@@ -1,7 +1,7 @@
-﻿using ESFA.DC.Logging.Enums;
+﻿using System;
+using ESFA.DC.Logging.Enums;
 using ESFA.DC.Logging.SeriLogging;
 using Moq;
-using System;
 using Xunit;
 
 namespace ESFA.DC.Logging.UnitTests
@@ -110,7 +110,6 @@ namespace ESFA.DC.Logging.UnitTests
                         break;
                 }
 
-                //check if there was an exception or not while executing the action
                 var ex = Record.Exception(action);
                 Assert.Null(ex);
             }
@@ -123,6 +122,7 @@ namespace ESFA.DC.Logging.UnitTests
             Assert.NotNull(logger);
             Assert.IsType<SeriLogger>(logger);
         }
+
         [Fact]
         public void TestConnectionStringLogger()
         {
@@ -130,29 +130,21 @@ namespace ESFA.DC.Logging.UnitTests
             Assert.NotNull(logger);
             Assert.IsType<SeriLogger>(logger);
         }
+
         [Fact]
         public void TestConnectionStringWithJobLogger()
         {
-            var logger = LoggerManager.CreateLogger("test connection string","jobid1");
+            var logger = LoggerManager.CreateLogger("test connection string", "jobid1");
             Assert.NotNull(logger);
             Assert.IsType<SeriLogger>(logger);
         }
+
         [Fact]
         public void TestConnectionStringWithJobAndTaskLogger()
         {
-            var logger = LoggerManager.CreateLogger("test connection string", "jobid1","taskKey");
+            var logger = LoggerManager.CreateLogger("test connection string", "jobid1", "taskKey");
             Assert.NotNull(logger);
             Assert.IsType<SeriLogger>(logger);
-        }
-
-        private ILogger CreateLogger(LogLevel logLevel, string jobId, string taskKey = "")
-        {
-            var config = new ApplicationLoggerSettings();
-
-            config.LoggerOutput = LogOutputDestination.Console;
-            config.MinimumLogLevel = logLevel;
-
-            return new SeriLogger(config, jobId, taskKey);
         }
 
         [Fact]
@@ -160,17 +152,18 @@ namespace ESFA.DC.Logging.UnitTests
         {
             var config = new ApplicationLoggerSettings();
             var logger = new SeriLogger(config);
-            
-            var ex = Record.Exception(()=> logger.StartContext("JobId1"));
+
+            var ex = Record.Exception(() => logger.StartContext("JobId1"));
             Assert.Null(ex);
         }
+
         [Fact]
         public void StartContextJobWithKeyTest()
         {
             var config = new ApplicationLoggerSettings();
             var logger = new SeriLogger(config);
 
-            var ex = Record.Exception(() => logger.StartContext("JobId1","taskKey"));
+            var ex = Record.Exception(() => logger.StartContext("JobId1", "taskKey"));
             Assert.Null(ex);
         }
 
@@ -182,6 +175,16 @@ namespace ESFA.DC.Logging.UnitTests
 
             var ex = Record.Exception(() => logger.ResetContext());
             Assert.Null(ex);
+        }
+
+        private ILogger CreateLogger(LogLevel logLevel, string jobId, string taskKey = "")
+        {
+            var config = new ApplicationLoggerSettings();
+
+            config.LoggerOutput = LogOutputDestination.Console;
+            config.MinimumLogLevel = logLevel;
+
+            return new SeriLogger(config, jobId, taskKey);
         }
     }
 }

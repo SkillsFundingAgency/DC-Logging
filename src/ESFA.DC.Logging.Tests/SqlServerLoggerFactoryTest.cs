@@ -1,7 +1,7 @@
-﻿using ESFA.DC.Logging.SeriLogging;
+﻿using System;
+using ESFA.DC.Logging.SeriLogging;
 using Moq;
 using Serilog;
-using System;
 using Xunit;
 
 namespace ESFA.DC.Logging.UnitTests
@@ -21,7 +21,7 @@ namespace ESFA.DC.Logging.UnitTests
         [Fact]
         public void LoggerInitialisedWithoutConnectionString()
         {
-            Assert.Throws<ArgumentNullException>(() => SqlServerLoggerFactory.CreateLogger(It.IsAny<LoggerConfiguration>(), "", "test"));
+            Assert.Throws<ArgumentNullException>(() => SqlServerLoggerFactory.CreateLogger(It.IsAny<LoggerConfiguration>(), string.Empty, "test"));
         }
     }
 }
