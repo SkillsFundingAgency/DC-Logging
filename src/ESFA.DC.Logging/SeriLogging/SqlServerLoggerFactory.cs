@@ -27,11 +27,16 @@ namespace ESFA.DC.Logging.SeriLogging
         {
             var columnOptions = new ColumnOptions
             {
+                TimeStamp =
+                {
+                    ColumnName = "TimeStampUTC",
+                    ConvertToUtc = true,
+                },
                 AdditionalDataColumns = new Collection<DataColumn>
                 {
-                    new DataColumn { DataType = typeof(DateTime), ColumnName = "TimeStampUTC" },
                     new DataColumn { DataType = typeof(string), ColumnName = "MachineName" },
                     new DataColumn { DataType = typeof(string), ColumnName = "ProcessName" },
+                    new DataColumn { DataType = typeof(string), ColumnName = "ThreadId" },
                     new DataColumn { DataType = typeof(string), ColumnName = "CallerName" },
                     new DataColumn { DataType = typeof(string), ColumnName = "SourceFile" },
                     new DataColumn { DataType = typeof(int), ColumnName = "LineNumber" },
@@ -41,7 +46,6 @@ namespace ESFA.DC.Logging.SeriLogging
             };
 
             columnOptions.Store.Remove(StandardColumn.Properties);
-            columnOptions.Store.Remove(StandardColumn.TimeStamp);
 
             return columnOptions;
         }

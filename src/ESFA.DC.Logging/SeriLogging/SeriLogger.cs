@@ -10,17 +10,14 @@ namespace ESFA.DC.Logging.SeriLogging
     public class SeriLogger : ILogger
     {
         private readonly IApplicationLoggerSettings _applicationLoggerSettings;
-        private readonly IDateTimeProvider _dateTimeProvider;
-
-        private Serilog.ILogger _serilogLogger;
+        private readonly Serilog.ILogger _serilogLogger;
         private bool _disposedValue;
 
-        public SeriLogger(IApplicationLoggerSettings applicationLoggerSettings, IDateTimeProvider dateTimeProvider = null)
+        public SeriLogger(IApplicationLoggerSettings applicationLoggerSettings)
         {
             _applicationLoggerSettings = applicationLoggerSettings;
-            _dateTimeProvider = dateTimeProvider ?? new UtcDateTimeProvider();
 
-            InitializeLogger(applicationLoggerSettings);
+            _serilogLogger = InitializeLogger(applicationLoggerSettings);
         }
 
         public LoggerConfiguration ConfigureSerilog()
@@ -122,7 +119,7 @@ namespace ESFA.DC.Logging.SeriLogging
             }
         }
 
-        private void InitializeLogger(IApplicationLoggerSettings appConfig)
+        private Serilog.ILogger InitializeLogger(IApplicationLoggerSettings appConfig)
         {
             if (appConfig.EnableInternalLogs)
             {
@@ -135,11 +132,9 @@ namespace ESFA.DC.Logging.SeriLogging
             switch (appConfig.LoggerOutput)
             {
                 case Enums.LogOutputDestination.SqlServer:
-                    _serilogLogger = SqlServerLoggerFactory.CreateLogger(seriConfig, appConfig.ConnectionString, appConfig.LogsTableName);
-                    break;
+                    return SqlServerLoggerFactory.CreateLogger(seriConfig, appConfig.ConnectionString, appConfig.LogsTableName);
                 case Enums.LogOutputDestination.Console:
-                    _serilogLogger = ConsoleLoggerFactory.CreateLogger(seriConfig);
-                    break;
+                    return ConsoleLoggerFactory.CreateLogger(seriConfig);
                 default:
                     throw new ArgumentOutOfRangeException();
             }
@@ -151,7 +146,6 @@ namespace ESFA.DC.Logging.SeriLogging
                 .ForContext("CallerName", callerName)
                 .ForContext("SourceFile", sourceFile)
                 .ForContext("LineNumber", lineNumber)
-                .ForContext("TimeStampUTC", _dateTimeProvider.Now())
                 .ForContext("JobId", _applicationLoggerSettings.JobId)
                 .ForContext("TaskKey", _applicationLoggerSettings.TaskKey);
         }
