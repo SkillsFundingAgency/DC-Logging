@@ -1,4 +1,6 @@
-﻿namespace ESFA.DC.Logging
+﻿using ESFA.DC.Logging.Interfaces;
+
+namespace ESFA.DC.Logging
 {
     public static class LoggerManager
     {
@@ -21,6 +23,7 @@
         public static ILogger CreateLogger(string connectionString, string jobId)
         {
             var config = new ApplicationLoggerSettings();
+
             return new SeriLogging.SeriLogger(config, jobId);
         }
 

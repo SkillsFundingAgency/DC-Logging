@@ -6,7 +6,7 @@ using Serilog.Events;
 
 namespace ESFA.DC.Logging.SeriLogging
 {
-    public class EnvironmentEnricher : ILogEventEnricher
+    public class EnvironmentLogEventEnricher : ILogEventEnricher
     {
         public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
         {

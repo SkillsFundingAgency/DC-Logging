@@ -6,6 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dapper;
 using ESFA.DC.Logging.Enums;
+using ESFA.DC.Logging.Interfaces;
 using ESFA.DC.Logging.SeriLogging;
 using ESFA.DC.Logging.Tests.Integration.Entities;
 

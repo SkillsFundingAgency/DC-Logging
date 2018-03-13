@@ -1,8 +1,9 @@
 ﻿using ESFA.DC.Logging.Enums;
+using ESFA.DC.Logging.Interfaces;
 
 namespace ESFA.DC.Logging
 {
-    public class ApplicationLoggerSettings
+    public class ApplicationLoggerSettings : IApplicationLoggerSettings
     {
         public LogLevel MinimumLogLevel { get; set; } = LogLevel.Verbose;
 

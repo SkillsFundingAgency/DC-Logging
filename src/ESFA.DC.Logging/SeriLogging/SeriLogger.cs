@@ -1,42 +1,33 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using ESFA.DC.Logging.Interfaces;
 using Serilog;
-using Serilog.Core;
+using ILogger = ESFA.DC.Logging.Interfaces.ILogger;
 
 namespace ESFA.DC.Logging.SeriLogging
 {
     public class SeriLogger : ILogger
     {
-        private Logger _logger = null;
-        private ApplicationLoggerSettings _appLoggerSettings = null;
+        private Serilog.ILogger _serilogLogger;
+        private IApplicationLoggerSettings _applicationLoggerSettings;
 
         private string _jobId = string.Empty;
         private string _taskKey = string.Empty;
         private bool _disposedValue;
 
-        public SeriLogger(ApplicationLoggerSettings appConfig)
+        public SeriLogger(IApplicationLoggerSettings appConfig, string jobId = "", string taskKey = "")
         {
-            InitialzeLogger(appConfig, string.Empty, string.Empty);
-        }
-
-        public SeriLogger(ApplicationLoggerSettings appConfig, string jobId)
-        {
-            InitialzeLogger(appConfig, jobId, string.Empty);
-        }
-
-        public SeriLogger(ApplicationLoggerSettings appConfig, string jobId, string taskKey)
-        {
-            InitialzeLogger(appConfig, jobId, taskKey);
+            InitializeLogger(appConfig, jobId, taskKey);
         }
 
         public LoggerConfiguration ConfigureSerilog()
         {
             var seriConfig = new LoggerConfiguration()
                 .Enrich.FromLogContext()
-                .Enrich.With<EnvironmentEnricher>();
+                .Enrich.With<EnvironmentLogEventEnricher>();
 
-            switch (_appLoggerSettings.MinimumLogLevel)
+            switch (_applicationLoggerSettings.MinimumLogLevel)
             {
                 case Enums.LogLevel.Verbose:
                     seriConfig.MinimumLevel.Verbose();
@@ -111,12 +102,7 @@ namespace ESFA.DC.Logging.SeriLogging
             AddContext(callerName, sourceFile, lineNumber).Information(message, parameters);
         }
 
-        public void StartContext(string jobId)
-        {
-            _jobId = jobId;
-        }
-
-        public void StartContext(string jobId, string taskKey)
+        public void StartContext(string jobId, string taskKey = "")
         {
             _jobId = jobId;
             _taskKey = taskKey;
@@ -139,14 +125,14 @@ namespace ESFA.DC.Logging.SeriLogging
             {
                 if (disposing)
                 {
-                    _logger.Dispose();
+                    ((IDisposable)_serilogLogger).Dispose();
                 }
 
                 _disposedValue = true;
             }
         }
 
-        private void InitialzeLogger(ApplicationLoggerSettings appConfig, string jobId, string taskKey)
+        private void InitializeLogger(IApplicationLoggerSettings appConfig, string jobId, string taskKey)
         {
             if (appConfig.EnableInternalLogs)
             {
@@ -154,30 +140,32 @@ namespace ESFA.DC.Logging.SeriLogging
                 Serilog.Debugging.SelfLog.Enable(Console.Error);
             }
 
-            _appLoggerSettings = appConfig;
+            _applicationLoggerSettings = appConfig;
             _jobId = jobId;
             _taskKey = taskKey;
 
             var seriConfig = ConfigureSerilog();
 
-            if (appConfig.LoggerOutput == Enums.LogOutputDestination.SqlServer)
+            switch (appConfig.LoggerOutput)
             {
-                _logger = SqlServerLoggerFactory.CreateLogger(seriConfig, appConfig.ConnectionString, appConfig.LogsTableName);
-            }
-            else if (appConfig.LoggerOutput == Enums.LogOutputDestination.Console)
-            {
-                _logger = ConsoleLoggerFactory.CreateLogger(seriConfig);
+                case Enums.LogOutputDestination.SqlServer:
+                    _serilogLogger = SqlServerLoggerFactory.CreateLogger(seriConfig, appConfig.ConnectionString, appConfig.LogsTableName);
+                    break;
+                case Enums.LogOutputDestination.Console:
+                    _serilogLogger = ConsoleLoggerFactory.CreateLogger(seriConfig);
+                    break;
             }
         }
 
         private Serilog.ILogger AddContext(string callerName, string sourceFile, int lineNumber)
         {
-            return _logger.ForContext("CallerName", callerName)
-                    .ForContext("SourceFile", sourceFile)
-                    .ForContext("LineNumber", lineNumber)
-                    .ForContext("TimeStampUTC", DateTime.Now.ToUniversalTime())
-                    .ForContext("JobId", _jobId)
-                    .ForContext("TaskKey", _taskKey);
+            return _serilogLogger
+                .ForContext("CallerName", callerName)
+                .ForContext("SourceFile", sourceFile)
+                .ForContext("LineNumber", lineNumber)
+                .ForContext("TimeStampUTC", DateTime.Now.ToUniversalTime())
+                .ForContext("JobId", _jobId)
+                .ForContext("TaskKey", _taskKey);
         }
     }
 }

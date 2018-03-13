@@ -1,5 +1,6 @@
 ﻿using System;
 using ESFA.DC.Logging.Enums;
+using ESFA.DC.Logging.Interfaces;
 using ESFA.DC.Logging.SeriLogging;
 using Moq;
 using Xunit;

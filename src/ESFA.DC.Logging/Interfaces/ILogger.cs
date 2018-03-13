@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 
-namespace ESFA.DC.Logging
+namespace ESFA.DC.Logging.Interfaces
 {
     public interface ILogger : IDisposable
     {
@@ -34,9 +34,7 @@ namespace ESFA.DC.Logging
             [CallerFilePath] string sourceFile = "",
             [CallerLineNumber] int lineNumber = 0);
 
-        void StartContext(string jobId);
-
-        void StartContext(string jobId, string taskKey);
+        void StartContext(string jobId, string taskKey = "");
 
         void ResetContext();
     }
