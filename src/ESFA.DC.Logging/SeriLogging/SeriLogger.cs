@@ -24,7 +24,9 @@ namespace ESFA.DC.Logging.SeriLogging
         {
             var seriConfig = new LoggerConfiguration()
                 .Enrich.FromLogContext()
-                .Enrich.With<EnvironmentLogEventEnricher>();
+                .Enrich.WithMachineName()
+                .Enrich.WithProcessName()
+                .Enrich.WithThreadId();
 
             switch (_applicationLoggerSettings.MinimumLogLevel)
             {
