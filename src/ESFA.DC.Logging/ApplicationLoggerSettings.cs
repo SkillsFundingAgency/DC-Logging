@@ -14,5 +14,9 @@ namespace ESFA.DC.Logging
         public string LogsTableName { get; set; } = "Logs";
 
         public bool EnableInternalLogs { get; set; }
+
+        public string JobId { get; set; }
+
+        public string TaskKey { get; set; }
     }
 }

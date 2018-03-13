@@ -9,16 +9,18 @@ namespace ESFA.DC.Logging.SeriLogging
 {
     public class SeriLogger : ILogger
     {
-        private Serilog.ILogger _serilogLogger;
-        private IApplicationLoggerSettings _applicationLoggerSettings;
+        private readonly IApplicationLoggerSettings _applicationLoggerSettings;
+        private readonly IDateTimeProvider _dateTimeProvider;
 
-        private string _jobId = string.Empty;
-        private string _taskKey = string.Empty;
+        private Serilog.ILogger _serilogLogger;
         private bool _disposedValue;
 
-        public SeriLogger(IApplicationLoggerSettings appConfig, string jobId = "", string taskKey = "")
+        public SeriLogger(IApplicationLoggerSettings applicationLoggerSettings, IDateTimeProvider dateTimeProvider = null)
         {
-            InitializeLogger(appConfig, jobId, taskKey);
+            _applicationLoggerSettings = applicationLoggerSettings;
+            _dateTimeProvider = dateTimeProvider ?? new UtcDateTimeProvider();
+
+            InitializeLogger(applicationLoggerSettings);
         }
 
         public LoggerConfiguration ConfigureSerilog()
@@ -102,18 +104,6 @@ namespace ESFA.DC.Logging.SeriLogging
             AddContext(callerName, sourceFile, lineNumber).Information(message, parameters);
         }
 
-        public void StartContext(string jobId, string taskKey = "")
-        {
-            _jobId = jobId;
-            _taskKey = taskKey;
-        }
-
-        public void ResetContext()
-        {
-            _jobId = string.Empty;
-            _taskKey = string.Empty;
-        }
-
         public void Dispose()
         {
             Dispose(true);
@@ -132,17 +122,13 @@ namespace ESFA.DC.Logging.SeriLogging
             }
         }
 
-        private void InitializeLogger(IApplicationLoggerSettings appConfig, string jobId, string taskKey)
+        private void InitializeLogger(IApplicationLoggerSettings appConfig)
         {
             if (appConfig.EnableInternalLogs)
             {
                 Serilog.Debugging.SelfLog.Enable(msg => Debug.WriteLine(msg));
                 Serilog.Debugging.SelfLog.Enable(Console.Error);
             }
-
-            _applicationLoggerSettings = appConfig;
-            _jobId = jobId;
-            _taskKey = taskKey;
 
             var seriConfig = ConfigureSerilog();
 
@@ -154,6 +140,8 @@ namespace ESFA.DC.Logging.SeriLogging
                 case Enums.LogOutputDestination.Console:
                     _serilogLogger = ConsoleLoggerFactory.CreateLogger(seriConfig);
                     break;
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
 
@@ -163,9 +151,9 @@ namespace ESFA.DC.Logging.SeriLogging
                 .ForContext("CallerName", callerName)
                 .ForContext("SourceFile", sourceFile)
                 .ForContext("LineNumber", lineNumber)
-                .ForContext("TimeStampUTC", DateTime.Now.ToUniversalTime())
-                .ForContext("JobId", _jobId)
-                .ForContext("TaskKey", _taskKey);
+                .ForContext("TimeStampUTC", _dateTimeProvider.Now())
+                .ForContext("JobId", _applicationLoggerSettings.JobId)
+                .ForContext("TaskKey", _applicationLoggerSettings.TaskKey);
         }
     }
 }

@@ -33,9 +33,5 @@ namespace ESFA.DC.Logging.Interfaces
             [CallerMemberName] string callerName = "",
             [CallerFilePath] string sourceFile = "",
             [CallerLineNumber] int lineNumber = 0);
-
-        void StartContext(string jobId, string taskKey = "");
-
-        void ResetContext();
     }
 }

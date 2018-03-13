@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using Dapper;
 using ESFA.DC.Logging.Enums;
 using ESFA.DC.Logging.Interfaces;
@@ -42,10 +43,12 @@ namespace ESFA.DC.Logging.Tests.Integration.Base
 
             var config = new ApplicationLoggerSettings
             {
-                MinimumLogLevel = logLevel
+                MinimumLogLevel = logLevel,
+                JobId = jobId,
+                TaskKey = taskKey,
             };
 
-            return string.IsNullOrEmpty(taskKey) ? new SeriLogger(config, jobId) : new SeriLogger(config, jobId, taskKey);
+            return new SeriLogger(config);
         }
 
         public List<AppLogEntity> GetLogs()

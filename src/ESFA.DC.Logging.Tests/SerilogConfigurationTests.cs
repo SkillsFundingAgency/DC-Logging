@@ -9,7 +9,7 @@ namespace ESFA.DC.Logging.Tests
         [Fact]
         public void SetupSeriLogConfigForJob()
         {
-            var logger = new SeriLogger(new Mock<ApplicationLoggerSettings>().Object, "Job1");
+            var logger = new SeriLogger(new Mock<ApplicationLoggerSettings>().Object);
             var l = logger.ConfigureSerilog();
 
             Assert.NotNull(l);
@@ -18,7 +18,7 @@ namespace ESFA.DC.Logging.Tests
         [Fact]
         public void SetupSeriLogConfigForTaskKey()
         {
-            var logger = new SeriLogger(new Mock<ApplicationLoggerSettings>().Object, "Job1", "taskkey");
+            var logger = new SeriLogger(new Mock<ApplicationLoggerSettings>().Object);
             var l = logger.ConfigureSerilog();
 
             Assert.NotNull(l);

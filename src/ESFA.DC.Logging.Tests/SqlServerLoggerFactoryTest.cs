@@ -11,7 +11,7 @@ namespace ESFA.DC.Logging.Tests
         [Fact]
         public void CreateSqlServerLoggerTest()
         {
-            var logger = new SeriLogger(new Mock<ApplicationLoggerSettings>().Object, "Job1");
+            var logger = new SeriLogger(new Mock<ApplicationLoggerSettings>().Object);
             var config = logger.ConfigureSerilog();
 
             var result = SqlServerLoggerFactory.CreateLogger(config, "test", "test");

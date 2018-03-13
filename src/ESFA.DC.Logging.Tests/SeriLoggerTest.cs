@@ -13,7 +13,7 @@ namespace ESFA.DC.Logging.Tests
         public void LoggerInitialisedWithDefaultConnectionString()
         {
             var config = new Moq.Mock<ApplicationLoggerSettings>();
-            Assert.NotNull(new SeriLogger(config.Object, "Job1"));
+            Assert.NotNull(new SeriLogger(config.Object));
         }
 
         [Fact]
@@ -22,7 +22,7 @@ namespace ESFA.DC.Logging.Tests
             var config = new Mock<ApplicationLoggerSettings>();
             config.Object.LoggerOutput = Enums.LogOutputDestination.Console;
 
-            Assert.NotNull(new SeriLogger(config.Object, "Job1"));
+            Assert.NotNull(new SeriLogger(config.Object));
         }
 
         [Theory]
@@ -33,7 +33,7 @@ namespace ESFA.DC.Logging.Tests
             var config = new ApplicationLoggerSettings();
             config.LoggerOutput = loggerOutputType;
 
-            Assert.NotNull(new SeriLogger(config, "Job1"));
+            Assert.NotNull(new SeriLogger(config));
         }
 
         [Theory]
@@ -44,7 +44,7 @@ namespace ESFA.DC.Logging.Tests
             var config = new ApplicationLoggerSettings();
             config.LoggerOutput = loggerOutputType;
 
-            Assert.NotNull(new SeriLogger(config, "Job1", "Context1"));
+            Assert.NotNull(new SeriLogger(config));
         }
 
         [Theory]
@@ -59,7 +59,7 @@ namespace ESFA.DC.Logging.Tests
             config.LoggerOutput = Enums.LogOutputDestination.SqlServer;
             config.MinimumLogLevel = logLevel;
 
-            Assert.NotNull(new SeriLogger(config, "Job1"));
+            Assert.NotNull(new SeriLogger(config));
         }
 
         [Fact]
@@ -68,7 +68,7 @@ namespace ESFA.DC.Logging.Tests
             var config = new ApplicationLoggerSettings();
             config.LoggerOutput = Enums.LogOutputDestination.SqlServer;
 
-            using (var logger = new SeriLogger(config, "Job1"))
+            using (var logger = new SeriLogger(config))
             {
                 Assert.NotNull(logger);
             }
@@ -132,60 +132,17 @@ namespace ESFA.DC.Logging.Tests
             Assert.IsType<SeriLogger>(logger);
         }
 
-        [Fact]
-        public void TestConnectionStringWithJobLogger()
-        {
-            var logger = LoggerManager.CreateLogger("test connection string", "jobid1");
-            Assert.NotNull(logger);
-            Assert.IsType<SeriLogger>(logger);
-        }
-
-        [Fact]
-        public void TestConnectionStringWithJobAndTaskLogger()
-        {
-            var logger = LoggerManager.CreateLogger("test connection string", "jobid1", "taskKey");
-            Assert.NotNull(logger);
-            Assert.IsType<SeriLogger>(logger);
-        }
-
-        [Fact]
-        public void StartContextJobTest()
-        {
-            var config = new ApplicationLoggerSettings();
-            var logger = new SeriLogger(config);
-
-            var ex = Record.Exception(() => logger.StartContext("JobId1"));
-            Assert.Null(ex);
-        }
-
-        [Fact]
-        public void StartContextJobWithKeyTest()
-        {
-            var config = new ApplicationLoggerSettings();
-            var logger = new SeriLogger(config);
-
-            var ex = Record.Exception(() => logger.StartContext("JobId1", "taskKey"));
-            Assert.Null(ex);
-        }
-
-        [Fact]
-        public void ResetContextTest()
-        {
-            var config = new ApplicationLoggerSettings();
-            var logger = new SeriLogger(config);
-
-            var ex = Record.Exception(() => logger.ResetContext());
-            Assert.Null(ex);
-        }
-
         private ILogger CreateLogger(LogLevel logLevel, string jobId, string taskKey = "")
         {
-            var config = new ApplicationLoggerSettings();
+            var config = new ApplicationLoggerSettings
+            {
+                LoggerOutput = LogOutputDestination.Console,
+                MinimumLogLevel = logLevel,
+                JobId = jobId,
+                TaskKey = taskKey
+            };
 
-            config.LoggerOutput = LogOutputDestination.Console;
-            config.MinimumLogLevel = logLevel;
-
-            return new SeriLogger(config, jobId, taskKey);
+            return new SeriLogger(config);
         }
     }
 }

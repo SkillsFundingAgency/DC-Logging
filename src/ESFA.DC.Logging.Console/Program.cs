@@ -29,21 +29,20 @@ namespace ESFA.DC.Logging.Console
 
             var config = new ApplicationLoggerSettings();
             config.EnableInternalLogs = true;
+            config.JobId = "TestJob";
             //using (var logger = new SeriLogger(config))
             //{
-                logger.StartContext("Testjob");
 
                 logger.LogDebug("some debug");
                 logger.LogInfo("some info");
                 logger.LogWarning("some warn");
                 logger.LogError("some error", new Exception("there was an exception"));
-                logger.ResetContext();
 
-                logger.StartContext("Testjob2");
-            logger.StartContext("Testjob3withkey","taskKey");
-            logger.LogWarning("some warn with task key");
-            logger.ResetContext();
-            logger.LogWarning("some warn after reset");
+            //    logger.StartContext("Testjob2");
+            //logger.StartContext("Testjob3withkey","taskKey");
+            //logger.LogWarning("some warn with task key");
+            //logger.ResetContext();
+            //logger.LogWarning("some warn after reset");
 
             //}
 

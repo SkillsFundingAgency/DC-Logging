@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using ESFA.DC.Logging.SeriLogging;
 using ESFA.DC.Logging.Tests.Integration.Base;
 using Xunit;
 
@@ -85,9 +86,14 @@ namespace ESFA.DC.Logging.Tests.Integration
         public void TestJobContextLogs()
         {
             _fixture.DeleteLogs();
-            using (var logger = LoggerManager.CreateDefaultLogger())
+
+            var config = new ApplicationLoggerSettings()
             {
-                logger.StartContext("jobId1");
+                JobId = "jobId1"
+            };
+
+            using (var logger = new SeriLogger(config))
+            {
                 logger.LogDebug($"test Debug");
             }
 
@@ -105,9 +111,15 @@ namespace ESFA.DC.Logging.Tests.Integration
         public void TestJobWithKeyContextLogs()
         {
             _fixture.DeleteLogs();
-            using (var logger = LoggerManager.CreateDefaultLogger())
+
+            var config = new ApplicationLoggerSettings
             {
-                logger.StartContext("jobId1", "taskkey1");
+                JobId = "jobId1",
+                TaskKey = "taskkey1",
+            };
+
+            using (var logger = new SeriLogger(config))
+            {
                 logger.LogDebug($"test Debug");
             }
 
