@@ -1,6 +1,5 @@
 ﻿using ESFA.DC.Logging.Config;
 using ESFA.DC.Logging.Config.Interfaces;
-using ESFA.DC.Logging.Interfaces;
 using ESFA.DC.Logging.SeriLogging;
 using Moq;
 using Xunit;

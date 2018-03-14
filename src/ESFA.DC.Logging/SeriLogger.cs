@@ -3,9 +3,6 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using ESFA.DC.Logging.Config;
 using ESFA.DC.Logging.Config.Interfaces;
-using ESFA.DC.Logging.Interfaces;
-using ESFA.DC.Logging.SeriLogging;
-using Serilog;
 using ILogger = ESFA.DC.Logging.Interfaces.ILogger;
 
 namespace ESFA.DC.Logging
@@ -25,45 +22,34 @@ namespace ESFA.DC.Logging
             _serilogLogger = InitializeLogger();
         }
 
-        public void LogError(
-            string message,
-            Exception ex,
-            object[] parameters = null,
-            [CallerMemberName] string callerName = "",
-            [CallerFilePath] string sourceFile = "",
-            [CallerLineNumber] int lineNumber = 0)
+        public void LogFatal(string message, Exception exception = null, object[] parameters = null, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
         {
-            AddContext(callerName, sourceFile, lineNumber).Error(ex, message, parameters);
+            AddContext(callerMemberName, callerFilePath, callerLineNumber).Fatal(exception, message, parameters);
         }
 
-        public void LogWarning(
-            string message,
-            object[] parameters = null,
-            [CallerMemberName] string callerName = "",
-            [CallerFilePath] string sourceFile = "",
-            [CallerLineNumber] int lineNumber = 0)
+        public void LogError(string message, Exception ex, object[] parameters = null, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
         {
-            AddContext(callerName, sourceFile, lineNumber).Warning(message, parameters);
+            AddContext(callerMemberName, callerFilePath, callerLineNumber).Error(ex, message, parameters);
         }
 
-        public void LogDebug(
-            string message,
-            object[] parameters = null,
-            [CallerMemberName] string callerName = "",
-            [CallerFilePath] string sourceFile = "",
-            [CallerLineNumber] int lineNumber = 0)
+        public void LogWarning(string message, object[] parameters = null, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
         {
-            AddContext(callerName, sourceFile, lineNumber).Debug(message, parameters);
+            AddContext(callerMemberName, callerFilePath, callerLineNumber).Warning(message, parameters);
         }
 
-        public void LogInfo(
-            string message,
-            object[] parameters = null,
-            [CallerMemberName] string callerName = "",
-            [CallerFilePath] string sourceFile = "",
-            [CallerLineNumber] int lineNumber = 0)
+        public void LogDebug(string message, object[] parameters = null, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
         {
-            AddContext(callerName, sourceFile, lineNumber).Information(message, parameters);
+            AddContext(callerMemberName, callerFilePath, callerLineNumber).Debug(message, parameters);
+        }
+
+        public void LogInfo(string message, object[] parameters = null, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
+        {
+            AddContext(callerMemberName, callerFilePath, callerLineNumber).Information(message, parameters);
+        }
+
+        public void LogVerbose(string message, object[] parameters = null, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
+        {
+            AddContext(callerMemberName, callerFilePath, callerLineNumber).Verbose(message, parameters);
         }
 
         public void Dispose()

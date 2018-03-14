@@ -26,6 +26,8 @@ namespace ESFA.DC.Logging.Tests.Integration
         }
 
         [Theory]
+        [InlineData(LogLevel.Fatal, "JobId")]
+        [InlineData(LogLevel.Fatal, "JobId", "taskkey")]
         [InlineData(LogLevel.Error, "JobId")]
         [InlineData(LogLevel.Error, "JobId", "taskkey")]
         [InlineData(LogLevel.Debug, "JobId")]
@@ -34,6 +36,8 @@ namespace ESFA.DC.Logging.Tests.Integration
         [InlineData(LogLevel.Warning, "JobId", "taskkey")]
         [InlineData(LogLevel.Information, "JobId")]
         [InlineData(LogLevel.Information, "JobId", "taskkey")]
+        [InlineData(LogLevel.Verbose, "JobId")]
+        [InlineData(LogLevel.Verbose, "JobId", "taskkey")]
         public void TestLogs(LogLevel logLevel, string jobId, string taskKey = "")
         {
             _fixture.TruncateLogs();
@@ -43,22 +47,22 @@ namespace ESFA.DC.Logging.Tests.Integration
                 switch (logLevel)
                 {
                     case LogLevel.Verbose:
-                        // TO DO
+                        logger.LogVerbose("Test Verbose");
                         break;
                     case LogLevel.Debug:
-                        logger.LogDebug($"test Debug");
+                        logger.LogDebug("Test Debug");
                         break;
                     case LogLevel.Information:
-                        logger.LogInfo($"test Information");
+                        logger.LogInfo("Test Information");
                         break;
                     case LogLevel.Warning:
-                        logger.LogWarning($"test Warning");
+                        logger.LogWarning("Test Warning");
                         break;
                     case LogLevel.Error:
-                        logger.LogError($"test Error", new Exception("exception occured"));
+                        logger.LogError("Test Error", new Exception("Exception occured."));
                         break;
                     case LogLevel.Fatal:
-                        // TO DO 
+                        logger.LogFatal("Test Fatal", new Exception("Exception occured."));
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(nameof(logLevel), logLevel, null);
@@ -72,9 +76,9 @@ namespace ESFA.DC.Logging.Tests.Integration
 
             var log = logs[0];
 
-            log.Message.Should().Be($"test {logLevel}");
+            log.Message.Should().Be($"Test {logLevel}");
             log.Level.Should().Be(logLevel.ToString());
-            log.MessageTemplate.Should().Be($"test {logLevel}");
+            log.MessageTemplate.Should().Be($"Test {logLevel}");
             log.MachineName.Should().Be(Environment.MachineName);
             log.ProcessName.Should().Be(Process.GetCurrentProcess().ProcessName);
             log.ThreadId.Should().NotBeNullOrWhiteSpace();
@@ -84,9 +88,9 @@ namespace ESFA.DC.Logging.Tests.Integration
             log.JobId.Should().Be(jobId);
             log.TaskKey.Should().Be(taskKey);
 
-            if (logLevel == LogLevel.Error)
+            if (logLevel == LogLevel.Error || logLevel == LogLevel.Fatal)
             {
-                Assert.Equal("System.Exception: exception occured", log.Exception);
+                Assert.Equal("System.Exception: Exception occured.", log.Exception);
             }
         }
 
