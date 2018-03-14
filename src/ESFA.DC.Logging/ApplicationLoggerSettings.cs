@@ -1,4 +1,6 @@
-﻿using ESFA.DC.Logging.Enums;
+﻿using System.Collections.Generic;
+using ESFA.DC.Logging.Config.Interfaces;
+using ESFA.DC.Logging.Enums;
 using ESFA.DC.Logging.Interfaces;
 
 namespace ESFA.DC.Logging
@@ -18,5 +20,7 @@ namespace ESFA.DC.Logging
         public string JobId { get; set; }
 
         public string TaskKey { get; set; }
+
+        public IList<IApplicationLoggerOutputSettings> ApplicationLoggerOutputSettingsCollection { get; set; } = new List<IApplicationLoggerOutputSettings>();
     }
 }

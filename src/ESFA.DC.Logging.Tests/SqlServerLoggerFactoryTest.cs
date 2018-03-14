@@ -1,4 +1,7 @@
 ﻿using System;
+using ESFA.DC.Logging.Config;
+using ESFA.DC.Logging.Config.Interfaces;
+using ESFA.DC.Logging.Interfaces;
 using ESFA.DC.Logging.SeriLogging;
 using Moq;
 using Serilog;
@@ -11,8 +14,7 @@ namespace ESFA.DC.Logging.Tests
         [Fact]
         public void CreateSqlServerLoggerTest()
         {
-            var logger = new SeriLogger(new Mock<ApplicationLoggerSettings>().Object);
-            var config = logger.ConfigureSerilog();
+            var config = new LoggerConfigurationBuilder().Build(new Mock<IApplicationLoggerSettings>().Object);
 
             var result = SqlServerLoggerFactory.CreateLogger(config, "test", "test");
             Assert.NotNull(result);

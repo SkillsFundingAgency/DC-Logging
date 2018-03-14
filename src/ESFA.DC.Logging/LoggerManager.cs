@@ -1,4 +1,5 @@
-﻿using ESFA.DC.Logging.Interfaces;
+﻿using ESFA.DC.Logging.Config.Interfaces;
+using ESFA.DC.Logging.Interfaces;
 
 namespace ESFA.DC.Logging
 {
@@ -7,7 +8,7 @@ namespace ESFA.DC.Logging
         public static ILogger CreateDefaultLogger()
         {
             var config = new ApplicationLoggerSettings();
-            return new SeriLogging.SeriLogger(config);
+            return new SeriLogger(config);
         }
 
         public static ILogger CreateLogger(string connectionString)
@@ -16,10 +17,14 @@ namespace ESFA.DC.Logging
 
             if (!string.IsNullOrWhiteSpace(connectionString))
             {
-                applicationLoggerSettings.ConnectionString = connectionString;
+                applicationLoggerSettings.ApplicationLoggerOutputSettingsCollection.Add(
+                    new MsSqlServerApplicationLoggerOutputSettings()
+                    {
+                        ConnectionString = connectionString
+                    });
             }
 
-            return new SeriLogging.SeriLogger(applicationLoggerSettings);
+            return new SeriLogger(applicationLoggerSettings);
         }
     }
 }

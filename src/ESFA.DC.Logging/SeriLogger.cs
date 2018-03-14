@@ -1,65 +1,28 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using ESFA.DC.Logging.Config;
+using ESFA.DC.Logging.Config.Interfaces;
 using ESFA.DC.Logging.Interfaces;
+using ESFA.DC.Logging.SeriLogging;
 using Serilog;
 using ILogger = ESFA.DC.Logging.Interfaces.ILogger;
 
-namespace ESFA.DC.Logging.SeriLogging
+namespace ESFA.DC.Logging
 {
     public class SeriLogger : ILogger
     {
         private readonly IApplicationLoggerSettings _applicationLoggerSettings;
+        private readonly ILoggerConfigurationBuilder _loggerConfigurationBuilder;
         private readonly Serilog.ILogger _serilogLogger;
-        private bool _disposedValue;
+        private bool _disposed;
 
-        public SeriLogger(IApplicationLoggerSettings applicationLoggerSettings)
+        public SeriLogger(IApplicationLoggerSettings applicationLoggerSettings, ILoggerConfigurationBuilder loggerConfigurationBuilder = null)
         {
             _applicationLoggerSettings = applicationLoggerSettings;
+            _loggerConfigurationBuilder = loggerConfigurationBuilder ?? new LoggerConfigurationBuilder();
 
-            _serilogLogger = InitializeLogger(applicationLoggerSettings);
-        }
-
-        public LoggerConfiguration ConfigureSerilog()
-        {
-            var seriConfig = new LoggerConfiguration()
-                .Enrich.FromLogContext()
-                .Enrich.WithMachineName()
-                .Enrich.WithProcessName()
-                .Enrich.WithThreadId();
-
-            switch (_applicationLoggerSettings.MinimumLogLevel)
-            {
-                case Enums.LogLevel.Verbose:
-                    seriConfig.MinimumLevel.Verbose();
-                    break;
-
-                case Enums.LogLevel.Debug:
-                    seriConfig.MinimumLevel.Debug();
-                    break;
-
-                case Enums.LogLevel.Information:
-                    seriConfig.MinimumLevel.Information();
-                    break;
-
-                case Enums.LogLevel.Warning:
-                    seriConfig.MinimumLevel.Warning();
-                    break;
-
-                case Enums.LogLevel.Error:
-                    seriConfig.MinimumLevel.Error();
-                    break;
-
-                case Enums.LogLevel.Fatal:
-                    seriConfig.MinimumLevel.Fatal();
-                    break;
-
-                default:
-                    seriConfig.MinimumLevel.Verbose();
-                    break;
-            }
-
-            return seriConfig;
+            _serilogLogger = InitializeLogger();
         }
 
         public void LogError(
@@ -110,36 +73,36 @@ namespace ESFA.DC.Logging.SeriLogging
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!_disposedValue)
+            if (!_disposed)
             {
                 if (disposing)
                 {
                     ((IDisposable)_serilogLogger).Dispose();
                 }
 
-                _disposedValue = true;
+                _disposed = true;
             }
         }
 
-        private Serilog.ILogger InitializeLogger(IApplicationLoggerSettings appConfig)
+        private Serilog.ILogger InitializeLogger()
         {
-            if (appConfig.EnableInternalLogs)
+            if (_applicationLoggerSettings.EnableInternalLogs)
             {
                 Serilog.Debugging.SelfLog.Enable(msg => Debug.WriteLine(msg));
                 Serilog.Debugging.SelfLog.Enable(Console.Error);
             }
 
-            var seriConfig = ConfigureSerilog();
+            return _loggerConfigurationBuilder.Build(_applicationLoggerSettings).CreateLogger();
 
-            switch (appConfig.LoggerOutput)
-            {
-                case Enums.LogOutputDestination.SqlServer:
-                    return SqlServerLoggerFactory.CreateLogger(seriConfig, appConfig.ConnectionString, appConfig.LogsTableName);
-                case Enums.LogOutputDestination.Console:
-                    return ConsoleLoggerFactory.CreateLogger(seriConfig);
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            ////switch (applicationLoggerSettings.LoggerOutput)
+            ////{
+            ////    case Enums.LogOutputDestination.SqlServer:
+            ////        return SqlServerLoggerFactory.CreateLogger(seriConfig, applicationLoggerSettings.ConnectionString, applicationLoggerSettings.LogsTableName);
+            ////    case Enums.LogOutputDestination.Console:
+            ////        return ConsoleLoggerFactory.CreateLogger(seriConfig);
+            ////    default:
+            ////        throw new ArgumentOutOfRangeException();
+            ////}
         }
 
         private Serilog.ILogger AddContext(string callerName, string sourceFile, int lineNumber)
