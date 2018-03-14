@@ -99,6 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConsoleLoggerFactoryTest.cs" />
+    <Compile Include="LoggerConfigurationMsSqlServerSinkExtensionsTests.cs" />
     <Compile Include="LogLevelExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerilogConfigurationTests.cs" />

@@ -16,14 +16,14 @@ namespace ESFA.DC.Logging.SeriLogging
                 throw new ArgumentNullException("There is no connectionStringKey defined for SQL server logging database");
             }
 
-            ColumnOptions columnOptions = SetupColumnOptions();
+            ColumnOptions columnOptions = BuildColumnOptions();
 
             return seriConfig.WriteTo
                 .MSSqlServer(connectionStringKey, tableName, autoCreateSqlTable: true, columnOptions: columnOptions)
                 .CreateLogger();
         }
 
-        public static ColumnOptions SetupColumnOptions()
+        public static ColumnOptions BuildColumnOptions()
         {
             var columnOptions = new ColumnOptions
             {

@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
-using System.Text;
 using ESFA.DC.Logging.Config.Interfaces;
 using ESFA.DC.Logging.Enums;
 using Serilog;
-using Serilog.Configuration;
 using Serilog.Sinks.MSSqlServer;
 
 namespace ESFA.DC.Logging.Config.Extensions
@@ -20,23 +18,33 @@ namespace ESFA.DC.Logging.Config.Extensions
                 .Where(s => s.LoggerOutputDestination == LogOutputDestination.SqlServer)
                 .Cast<IMsSqlServerApplicationLoggerOutputSettings>())
             {
-                if (string.IsNullOrEmpty(msSqlServerApplicationLoggerOutputSettings.ConnectionString))
-                {
-                    throw new ArgumentNullException("There is no connectionStringKey defined for SQL server logging database");
-                }
+                ValidateMsSqlServerApplicationLoggerOutputSettings(msSqlServerApplicationLoggerOutputSettings);
 
                 loggerConfiguration.WriteTo.MSSqlServer(
                     msSqlServerApplicationLoggerOutputSettings.ConnectionString,
                     msSqlServerApplicationLoggerOutputSettings.LogsTableName,
                     msSqlServerApplicationLoggerOutputSettings.MinimumLogLevel.ToLogEventLevel(),
                     autoCreateSqlTable: true,
-                    columnOptions: SetupColumnOptions());
+                    columnOptions: BuildColumnOptions());
             }
 
             return loggerConfiguration;
         }
 
-        public static ColumnOptions SetupColumnOptions()
+        public static void ValidateMsSqlServerApplicationLoggerOutputSettings(IMsSqlServerApplicationLoggerOutputSettings msSqlServerApplicationLoggerOutputSettings)
+        {
+            if (string.IsNullOrWhiteSpace(msSqlServerApplicationLoggerOutputSettings.ConnectionString))
+            {
+                throw new ArgumentNullException("There is no ConnectionString defined for SQL Server Logging Sink Configuration.");
+            }
+
+            if (string.IsNullOrWhiteSpace(msSqlServerApplicationLoggerOutputSettings.LogsTableName))
+            {
+                throw new ArgumentNullException("There is no LogsTableName defined for SQL Server Logging Sink Configuration.");
+            }
+        }
+
+        public static ColumnOptions BuildColumnOptions()
         {
             var columnOptions = new ColumnOptions
             {
