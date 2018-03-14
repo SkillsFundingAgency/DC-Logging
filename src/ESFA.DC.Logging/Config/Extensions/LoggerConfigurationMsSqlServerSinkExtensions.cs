@@ -28,8 +28,7 @@ namespace ESFA.DC.Logging.Config.Extensions
                 loggerConfiguration.WriteTo.MSSqlServer(
                     msSqlServerApplicationLoggerOutputSettings.ConnectionString,
                     msSqlServerApplicationLoggerOutputSettings.LogsTableName,
-                    LoggerConfigurationLogLevelExtensions.LogLevelToLogEventLevel(
-                        msSqlServerApplicationLoggerOutputSettings.MinimumLogLevel),
+                    msSqlServerApplicationLoggerOutputSettings.MinimumLogLevel.ToLogEventLevel(),
                     autoCreateSqlTable: true,
                     columnOptions: SetupColumnOptions());
             }
