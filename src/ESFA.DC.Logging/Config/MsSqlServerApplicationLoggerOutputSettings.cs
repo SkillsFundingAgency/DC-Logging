@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using ESFA.DC.Logging.Config.Interfaces;
+﻿using ESFA.DC.Logging.Config.Interfaces;
 using ESFA.DC.Logging.Enums;
 
-namespace ESFA.DC.Logging
+namespace ESFA.DC.Logging.Config
 {
     public class MsSqlServerApplicationLoggerOutputSettings : IMsSqlServerApplicationLoggerOutputSettings, IApplicationLoggerOutputSettings
     {

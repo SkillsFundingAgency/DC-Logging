@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ESFA.DC.Logging.Config;
 using ESFA.DC.Logging.Config.Extensions;
 using ESFA.DC.Logging.Config.Interfaces;
 using FluentAssertions;

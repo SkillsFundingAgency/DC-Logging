@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using ESFA.DC.Logging.Config.Interfaces;
 using ESFA.DC.Logging.Enums;
-using ESFA.DC.Logging.Interfaces;
 
-namespace ESFA.DC.Logging
+namespace ESFA.DC.Logging.Config
 {
     public class ApplicationLoggerSettings : IApplicationLoggerSettings
     {
