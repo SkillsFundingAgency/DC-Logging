@@ -14,18 +14,21 @@ namespace ESFA.DC.Logging.Config.Extensions
     {
         public static LoggerConfiguration WithMsSqlServerSinks(this LoggerConfiguration loggerConfiguration, IEnumerable<IApplicationLoggerOutputSettings> applicationLoggerOutputSettingsEnumerable)
         {
-            foreach (var msSqlServerApplicationLoggerOutputSettings in applicationLoggerOutputSettingsEnumerable
-                .Where(s => s.LoggerOutputDestination == LogOutputDestination.SqlServer)
-                .Cast<IMsSqlServerApplicationLoggerOutputSettings>())
+            if (applicationLoggerOutputSettingsEnumerable != null)
             {
-                ValidateMsSqlServerApplicationLoggerOutputSettings(msSqlServerApplicationLoggerOutputSettings);
+                foreach (var msSqlServerApplicationLoggerOutputSettings in applicationLoggerOutputSettingsEnumerable
+                    .Where(s => s.LoggerOutputDestination == LogOutputDestination.SqlServer)
+                    .Cast<IMsSqlServerApplicationLoggerOutputSettings>())
+                {
+                    ValidateMsSqlServerApplicationLoggerOutputSettings(msSqlServerApplicationLoggerOutputSettings);
 
-                loggerConfiguration.WriteTo.MSSqlServer(
-                    msSqlServerApplicationLoggerOutputSettings.ConnectionString,
-                    msSqlServerApplicationLoggerOutputSettings.LogsTableName,
-                    msSqlServerApplicationLoggerOutputSettings.MinimumLogLevel.ToLogEventLevel(),
-                    autoCreateSqlTable: true,
-                    columnOptions: BuildColumnOptions());
+                    loggerConfiguration.WriteTo.MSSqlServer(
+                        msSqlServerApplicationLoggerOutputSettings.ConnectionString,
+                        msSqlServerApplicationLoggerOutputSettings.LogsTableName,
+                        msSqlServerApplicationLoggerOutputSettings.MinimumLogLevel.ToLogEventLevel(),
+                        autoCreateSqlTable: true,
+                        columnOptions: BuildColumnOptions());
+                }
             }
 
             return loggerConfiguration;

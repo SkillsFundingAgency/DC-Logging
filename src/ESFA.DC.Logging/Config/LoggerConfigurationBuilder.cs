@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using ESFA.DC.Logging.Config.Extensions;
+﻿using ESFA.DC.Logging.Config.Extensions;
 using ESFA.DC.Logging.Config.Interfaces;
 using Serilog;
 
@@ -9,29 +8,16 @@ namespace ESFA.DC.Logging.Config
     {
         public LoggerConfiguration Build(IApplicationLoggerSettings applicationLoggerSettings)
         {
-            var loggerConfiguration = new LoggerConfiguration();
-
-            loggerConfiguration
+            return new LoggerConfiguration()
                 .Enrich.FromLogContext()
                 .Enrich.WithMachineName()
                 .Enrich.WithProcessName()
                 .Enrich.WithThreadId()
                 .Enrich.WithProperty("JobId", applicationLoggerSettings.JobId)
-                .Enrich.WithProperty("TaskKey", applicationLoggerSettings.TaskKey);
-
-            if (applicationLoggerSettings.ApplicationLoggerOutputSettingsCollection != null && applicationLoggerSettings.ApplicationLoggerOutputSettingsCollection.Any())
-            {
-                var minimumLogLevel =
-                applicationLoggerSettings
-                    .ApplicationLoggerOutputSettingsCollection
-                    .Min(s => s.MinimumLogLevel);
-
-                loggerConfiguration.WithLogLevel(minimumLogLevel);
-
-                loggerConfiguration.WithMsSqlServerSinks(applicationLoggerSettings.ApplicationLoggerOutputSettingsCollection);
-            }
-
-            return loggerConfiguration;
+                .Enrich.WithProperty("TaskKey", applicationLoggerSettings.TaskKey)
+                .WithMinimumLogLevel(applicationLoggerSettings.ApplicationLoggerOutputSettingsCollection)
+                .WithMsSqlServerSinks(applicationLoggerSettings.ApplicationLoggerOutputSettingsCollection)
+                .WithConsoleSinks(applicationLoggerSettings.ApplicationLoggerOutputSettingsCollection);
         }
     }
 }
