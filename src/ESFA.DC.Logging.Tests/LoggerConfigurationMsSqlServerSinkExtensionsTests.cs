@@ -60,6 +60,8 @@ namespace ESFA.DC.Logging.Tests
             var configuration = new LoggerConfiguration();
 
             configuration.WithMsSqlServerSinks(new List<IApplicationLoggerOutputSettings>());
+
+            configuration.CreateLogger().Should().NotBeNull();
         }
 
         [Fact]
@@ -71,6 +73,8 @@ namespace ESFA.DC.Logging.Tests
             {
                 new MsSqlServerApplicationLoggerOutputSettings()
             });
+
+            configuration.CreateLogger().Should().NotBeNull();
         }
 
         [Fact]
@@ -84,6 +88,8 @@ namespace ESFA.DC.Logging.Tests
                 new MsSqlServerApplicationLoggerOutputSettings(),
                 new MsSqlServerApplicationLoggerOutputSettings(),
             });
+
+            configuration.CreateLogger().Should().NotBeNull();
         }
 
         [Fact]

@@ -98,13 +98,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConsoleLoggerFactoryTest.cs" />
     <Compile Include="LoggerConfigurationMsSqlServerSinkExtensionsTests.cs" />
     <Compile Include="LogLevelExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerilogConfigurationTests.cs" />
-    <Compile Include="SeriLoggerTest.cs" />
-    <Compile Include="SqlServerLoggerFactoryTest.cs" />
+    <Compile Include="SeriLoggerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ESFA.DC.Logging.Tests.ruleset">

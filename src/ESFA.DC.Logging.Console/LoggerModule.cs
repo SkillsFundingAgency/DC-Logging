@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using ESFA.DC.Logging.Interfaces;
-using ESFA.DC.Logging.SeriLogging;
 
 namespace ESFA.DC.Logging.Console
 {
