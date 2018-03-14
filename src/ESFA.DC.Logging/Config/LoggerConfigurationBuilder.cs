@@ -15,7 +15,9 @@ namespace ESFA.DC.Logging.Config
                 .Enrich.FromLogContext()
                 .Enrich.WithMachineName()
                 .Enrich.WithProcessName()
-                .Enrich.WithThreadId();
+                .Enrich.WithThreadId()
+                .Enrich.WithProperty("JobId", applicationLoggerSettings.JobId)
+                .Enrich.WithProperty("TaskKey", applicationLoggerSettings.TaskKey);
 
             if (applicationLoggerSettings.ApplicationLoggerOutputSettingsCollection != null && applicationLoggerSettings.ApplicationLoggerOutputSettingsCollection.Any())
             {

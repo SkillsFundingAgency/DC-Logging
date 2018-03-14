@@ -9,17 +9,16 @@ namespace ESFA.DC.Logging
 {
     public class SeriLogger : ILogger
     {
-        private readonly IApplicationLoggerSettings _applicationLoggerSettings;
-        private readonly ILoggerConfigurationBuilder _loggerConfigurationBuilder;
         private readonly Serilog.ILogger _serilogLogger;
         private bool _disposed;
 
         public SeriLogger(IApplicationLoggerSettings applicationLoggerSettings, ILoggerConfigurationBuilder loggerConfigurationBuilder = null)
         {
-            _applicationLoggerSettings = applicationLoggerSettings;
-            _loggerConfigurationBuilder = loggerConfigurationBuilder ?? new LoggerConfigurationBuilder();
+            var loggerConfigurationBuilder1 = loggerConfigurationBuilder ?? new LoggerConfigurationBuilder();
 
-            _serilogLogger = InitializeLogger();
+            _serilogLogger = loggerConfigurationBuilder1.Build(applicationLoggerSettings).CreateLogger();
+
+            ConfigureInternalLogs(applicationLoggerSettings.EnableInternalLogs);
         }
 
         public void LogFatal(string message, Exception exception = null, object[] parameters = null, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
@@ -70,25 +69,13 @@ namespace ESFA.DC.Logging
             }
         }
 
-        private Serilog.ILogger InitializeLogger()
+        private void ConfigureInternalLogs(bool enableInternalLogs)
         {
-            if (_applicationLoggerSettings.EnableInternalLogs)
+            if (enableInternalLogs)
             {
                 Serilog.Debugging.SelfLog.Enable(msg => Debug.WriteLine(msg));
                 Serilog.Debugging.SelfLog.Enable(Console.Error);
             }
-
-            return _loggerConfigurationBuilder.Build(_applicationLoggerSettings).CreateLogger();
-
-            ////switch (applicationLoggerSettings.LoggerOutput)
-            ////{
-            ////    case Enums.LogOutputDestination.SqlServer:
-            ////        return SqlServerLoggerFactory.CreateLogger(seriConfig, applicationLoggerSettings.ConnectionString, applicationLoggerSettings.LogsTableName);
-            ////    case Enums.LogOutputDestination.Console:
-            ////        return ConsoleLoggerFactory.CreateLogger(seriConfig);
-            ////    default:
-            ////        throw new ArgumentOutOfRangeException();
-            ////}
         }
 
         private Serilog.ILogger AddContext(string callerName, string sourceFile, int lineNumber)
@@ -96,9 +83,7 @@ namespace ESFA.DC.Logging
             return _serilogLogger
                 .ForContext("CallerName", callerName)
                 .ForContext("SourceFile", sourceFile)
-                .ForContext("LineNumber", lineNumber)
-                .ForContext("JobId", _applicationLoggerSettings.JobId)
-                .ForContext("TaskKey", _applicationLoggerSettings.TaskKey);
+                .ForContext("LineNumber", lineNumber);
         }
     }
 }
