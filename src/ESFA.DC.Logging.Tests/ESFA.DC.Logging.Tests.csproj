@@ -98,10 +98,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LoggerConfigurationBuilderTests.cs" />
     <Compile Include="LoggerConfigurationMsSqlServerSinkExtensionsTests.cs" />
+    <Compile Include="LoggerManagerTests.cs" />
     <Compile Include="LogLevelExtensionsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SerilogConfigurationTests.cs" />
     <Compile Include="SeriLoggerTests.cs" />
   </ItemGroup>
   <ItemGroup>

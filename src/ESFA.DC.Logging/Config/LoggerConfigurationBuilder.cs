@@ -1,4 +1,6 @@
-﻿using ESFA.DC.Logging.Config.Extensions;
+﻿using System;
+using System.Diagnostics;
+using ESFA.DC.Logging.Config.Extensions;
 using ESFA.DC.Logging.Config.Interfaces;
 using Serilog;
 
@@ -8,16 +10,25 @@ namespace ESFA.DC.Logging.Config
     {
         public LoggerConfiguration Build(IApplicationLoggerSettings applicationLoggerSettings)
         {
+            ConfigureInternalLogs(applicationLoggerSettings.EnableInternalLogs);
+
             return new LoggerConfiguration()
                 .Enrich.FromLogContext()
                 .Enrich.WithMachineName()
                 .Enrich.WithProcessName()
                 .Enrich.WithThreadId()
-                .Enrich.WithProperty("JobId", applicationLoggerSettings.JobId)
-                .Enrich.WithProperty("TaskKey", applicationLoggerSettings.TaskKey)
                 .WithMinimumLogLevel(applicationLoggerSettings.ApplicationLoggerOutputSettingsCollection)
                 .WithMsSqlServerSinks(applicationLoggerSettings.ApplicationLoggerOutputSettingsCollection)
                 .WithConsoleSinks(applicationLoggerSettings.ApplicationLoggerOutputSettingsCollection);
+        }
+
+        private void ConfigureInternalLogs(bool enableInternalLogs)
+        {
+            if (enableInternalLogs)
+            {
+                Serilog.Debugging.SelfLog.Enable(msg => Debug.WriteLine(msg));
+                Serilog.Debugging.SelfLog.Enable(Console.Error);
+            }
         }
     }
 }

@@ -9,7 +9,8 @@ namespace ESFA.DC.Logging
         public static ILogger CreateDefaultLogger()
         {
             var config = new ApplicationLoggerSettings();
-            return new SeriLogger(config);
+            var executionContext = new ExecutionContext();
+            return new SeriLogger(config, executionContext);
         }
 
         public static ILogger CreateLogger(string connectionString)
@@ -25,7 +26,7 @@ namespace ESFA.DC.Logging
                     });
             }
 
-            return new SeriLogger(applicationLoggerSettings);
+            return new SeriLogger(applicationLoggerSettings, new ExecutionContext());
         }
     }
 }

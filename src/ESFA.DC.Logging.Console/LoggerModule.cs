@@ -1,6 +1,8 @@
 ﻿using Autofac;
 using ESFA.DC.Logging.Config;
 using ESFA.DC.Logging.Interfaces;
+using System.Collections.Generic;
+using ESFA.DC.Logging.Config.Interfaces;
 
 namespace ESFA.DC.Logging.Console
 {
@@ -10,11 +12,17 @@ namespace ESFA.DC.Logging.Console
         {
             var config = new ApplicationLoggerSettings
             {
-                LoggerOutput = ESFA.DC.Logging.Enums.LogOutputDestination.SqlServer
+                ApplicationLoggerOutputSettingsCollection = new List<IApplicationLoggerOutputSettings>()
+                {
+                    new MsSqlServerApplicationLoggerOutputSettings(),
+                    new ConsoleApplicationLoggerOutputSettings()
+                }
             };
-
-            builder.RegisterType<SeriLogger>().As<ILogger>()
-                .WithParameter(new TypedParameter(typeof(ApplicationLoggerSettings), config));
+            
+            builder.RegisterInstance(config).As<IApplicationLoggerSettings>().SingleInstance();
+            builder.RegisterType<ExecutionContext>().As<IExecutionContext>().InstancePerLifetimeScope();
+            builder.RegisterType<SerilogLoggerFactory>().As<ISerilogLoggerFactory>().InstancePerLifetimeScope();
+            builder.RegisterType<SeriLogger>().As<ILogger>().InstancePerLifetimeScope();
         }
     }
 }

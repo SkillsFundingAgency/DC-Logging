@@ -99,21 +99,22 @@ namespace ESFA.DC.Logging.Tests.Integration
         {
             var config = new ApplicationLoggerSettings
             {
-                MinimumLogLevel = minimumLogLevel,
-                JobId = jobId,
-                TaskKey = taskKey,
                 ApplicationLoggerOutputSettingsCollection = new List<IApplicationLoggerOutputSettings>()
                 {
                     new MsSqlServerApplicationLoggerOutputSettings()
                     {
-                        ConnectionString = connectionString,
-                        LogsTableName = logsTableName,
-                        MinimumLogLevel = minimumLogLevel
+                        MinimumLogLevel = LogLevel.Verbose
                     }
                 }
             };
 
-            return new SeriLogger(config);
+            var executionContext = new ExecutionContext()
+            {
+                JobId = jobId,
+                TaskKey = taskKey,
+            };
+
+            return new SeriLogger(config, executionContext, new SerilogLoggerFactory(new LoggerConfigurationBuilder()));
         }
     }
 }
