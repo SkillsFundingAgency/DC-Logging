@@ -10,8 +10,9 @@
     <RepositoryUrl>https://github.com/SkillsFundingAgency/DC-Logging</RepositoryUrl>
     <Copyright>Copyright 2018</Copyright>
     <PackageReleaseNotes />
-    <PackageTags>Logging</PackageTags>
+    <PackageTags>Logging DC</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>0.1.0</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
