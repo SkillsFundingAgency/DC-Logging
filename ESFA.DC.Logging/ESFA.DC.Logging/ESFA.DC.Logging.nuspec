@@ -2,31 +2,16 @@
 <package >
   <metadata>
     <id>ESFA.DC.Logging</id>
-    <version>$version$</version>
-    <title>ESFA.DC.Logging</title>
-    <authors>DC Team</authors>
+    <version>0.0.1</version>
+    <authors>DC</authors>
     <owners>ESFA</owners>
-    <licenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</licenseUrl>
-    <projectUrl>http://PROJECT_URL_HERE_OR_DELETE_THIS_LINE</projectUrl>
-    <iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>
+    <licenseUrl>https://github.com/SkillsFundingAgency/DC-Logging/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/SkillsFundingAgency/DC-Logging</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Wrapper package to use for application logging using Serilog</description>
-    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
     <copyright>Copyright 2018</copyright>
-    <tags>Tag1 Tag2</tags>
-    <dependencies>
-      <dependency id="Serilog.Sinks.MSSqlServer" version="5.1.0" />
-      <dependency id="Serilog.Sinks.Console" version="3.1.1" />
-    </dependencies>
-    <references>
-      <reference file="esfa.dc.logging.dll" />
-    </references>
+    <tags>Logging</tags>
   </metadata>
-  <files>
-    <file src="**\*.dll" target="lib" />
-    <file src="**\*.pdb" target="lib" />
-    <file src="**\*.xml" target="lib" />
-  </files>
 </package>
 
 
