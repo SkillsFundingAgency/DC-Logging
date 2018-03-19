@@ -2,6 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>DC</Authors>
+    <Company>ESFA</Company>
+    <Description>DC Logging Library.</Description>
+    <PackageLicenseUrl>https://github.com/SkillsFundingAgency/DC-Logging/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/SkillsFundingAgency/DC-Logging</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/SkillsFundingAgency/DC-Logging</RepositoryUrl>
+    <Copyright>Copyright 2018</Copyright>
+    <PackageReleaseNotes />
+    <PackageTags>Logging</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
