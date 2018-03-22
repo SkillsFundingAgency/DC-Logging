@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.SqlClient;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading;
 using Autofac;
 using ESFA.DC.Logging.Config;
 using ESFA.DC.Logging.Interfaces;
@@ -36,6 +37,11 @@ namespace ESFA.DC.Logging.Console
                 catch (Exception e)
                 {
                     logger.LogError("some error", e);
+                }
+                
+                using (var timedLogger = new TimedLogger(logger, "test Timer"))
+                {
+                    Thread.Sleep(1234);
                 }
             }
 

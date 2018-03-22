@@ -3,6 +3,7 @@ using ESFA.DC.Logging.Config;
 using ESFA.DC.Logging.Interfaces;
 using System.Collections.Generic;
 using ESFA.DC.Logging.Config.Interfaces;
+using ESFA.DC.Logging.Enums;
 
 namespace ESFA.DC.Logging.Console
 {
@@ -14,8 +15,14 @@ namespace ESFA.DC.Logging.Console
             {
                 ApplicationLoggerOutputSettingsCollection = new List<IApplicationLoggerOutputSettings>()
                 {
-                    new MsSqlServerApplicationLoggerOutputSettings(),
+                    new MsSqlServerApplicationLoggerOutputSettings()
+                    {
+                        MinimumLogLevel = LogLevel.Verbose
+                    },
                     new ConsoleApplicationLoggerOutputSettings()
+                    {
+                        MinimumLogLevel = LogLevel.Verbose
+                    }
                 }
             };
             
