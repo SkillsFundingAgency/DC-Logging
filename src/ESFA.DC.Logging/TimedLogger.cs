@@ -40,8 +40,9 @@ namespace ESFA.DC.Logging
             _stopwatch.Stop();
 
             _logger.LogInfo(
-                string.Format("{0} - {1}", BuildTimerString(_stopwatch.ElapsedMilliseconds), _message),
+                $"{BuildTimerString(_stopwatch.ElapsedMilliseconds)} - {_message}",
                 _parameters,
+                -1,
                 _callerMemberName,
                 _callerFilePath,
                 _callerLineNumber);
@@ -49,7 +50,7 @@ namespace ESFA.DC.Logging
 
         public string BuildTimerString(long milliseconds)
         {
-            return string.Format("{0} ms", milliseconds);
+            return $"{milliseconds} ms";
         }
     }
 }

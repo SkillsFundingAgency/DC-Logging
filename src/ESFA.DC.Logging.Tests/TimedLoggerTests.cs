@@ -21,7 +21,7 @@ namespace ESFA.DC.Logging.Tests
         {
             var loggerMock = new Mock<ILogger>();
 
-            loggerMock.Setup(l => l.LogInfo(It.IsRegex(@"ms - Test"), null, "CallerMemberName", "CallerFilePath", 100)).Verifiable();
+            loggerMock.Setup(l => l.LogInfo(It.IsRegex(@"ms - Test"), null, -1, "CallerMemberName", "CallerFilePath", 100)).Verifiable();
 
             using (var timedLogger = new TimedLogger(loggerMock.Object, "Test", null, "CallerMemberName", "CallerFilePath", 100))
             {

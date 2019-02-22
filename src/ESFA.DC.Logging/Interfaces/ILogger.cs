@@ -9,6 +9,7 @@ namespace ESFA.DC.Logging.Interfaces
             string message,
             Exception exception = null,
             object[] parameters = null,
+            int jobIdOverride = -1,
             [CallerMemberName] string callerMemberName = "",
             [CallerFilePath] string callerFilePath = "",
             [CallerLineNumber] int callerLineNumber = 0);
@@ -17,6 +18,7 @@ namespace ESFA.DC.Logging.Interfaces
             string message,
             Exception exception = null,
             object[] parameters = null,
+            int jobIdOverride = -1,
             [CallerMemberName] string callerMemberName = "",
             [CallerFilePath] string callerFilePath = "",
             [CallerLineNumber] int callerLineNumber = 0);
@@ -24,6 +26,7 @@ namespace ESFA.DC.Logging.Interfaces
         void LogWarning(
             string message,
             object[] parameters = null,
+            int jobIdOverride = -1,
             [CallerMemberName] string callerMemberName = "",
             [CallerFilePath] string callerFilePath = "",
             [CallerLineNumber] int callerLineNumber = 0);
@@ -31,6 +34,7 @@ namespace ESFA.DC.Logging.Interfaces
         void LogDebug(
             string message,
             object[] parameters = null,
+            int jobIdOverride = -1,
             [CallerMemberName] string callerMemberName = "",
             [CallerFilePath] string callerFilePath = "",
             [CallerLineNumber] int callerLineNumber = 0);
@@ -38,6 +42,7 @@ namespace ESFA.DC.Logging.Interfaces
         void LogInfo(
             string message,
             object[] parameters = null,
+            int jobIdOverride = -1,
             [CallerMemberName] string callerMemberName = "",
             [CallerFilePath] string callerFilePath = "",
             [CallerLineNumber] int callerLineNumber = 0);
@@ -45,6 +50,7 @@ namespace ESFA.DC.Logging.Interfaces
         void LogVerbose(
             string message,
             object[] parameters = null,
+            int jobIdOverride = -1,
             [CallerMemberName] string callerMemberName = "",
             [CallerFilePath] string callerFilePath = "",
             [CallerLineNumber] int callerLineNumber = 0);

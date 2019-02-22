@@ -23,34 +23,34 @@ namespace ESFA.DC.Logging
             _executionContext = executionContext;
         }
 
-        public void LogFatal(string message, Exception exception = null, object[] parameters = null, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
+        public void LogFatal(string message, Exception exception = null, object[] parameters = null, int jobIdOverride = -1, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
         {
-            AddContext(callerMemberName, callerFilePath, callerLineNumber, _executionContext.JobId, _executionContext.TaskKey).Fatal(exception, message, parameters);
+            AddContext(callerMemberName, callerFilePath, callerLineNumber, jobIdOverride > -1 ? jobIdOverride.ToString() : _executionContext.JobId, _executionContext.TaskKey).Fatal(exception, message, parameters);
         }
 
-        public void LogError(string message, Exception ex, object[] parameters = null, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
+        public void LogError(string message, Exception ex, object[] parameters = null, int jobIdOverride = -1, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
         {
-            AddContext(callerMemberName, callerFilePath, callerLineNumber, _executionContext.JobId, _executionContext.TaskKey).Error(ex, message, parameters);
+            AddContext(callerMemberName, callerFilePath, callerLineNumber, jobIdOverride > -1 ? jobIdOverride.ToString() : _executionContext.JobId, _executionContext.TaskKey).Error(ex, message, parameters);
         }
 
-        public void LogWarning(string message, object[] parameters = null, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
+        public void LogWarning(string message, object[] parameters = null, int jobIdOverride = -1, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
         {
-            AddContext(callerMemberName, callerFilePath, callerLineNumber, _executionContext.JobId, _executionContext.TaskKey).Warning(message, parameters);
+            AddContext(callerMemberName, callerFilePath, callerLineNumber, jobIdOverride > -1 ? jobIdOverride.ToString() : _executionContext.JobId, _executionContext.TaskKey).Warning(message, parameters);
         }
 
-        public void LogDebug(string message, object[] parameters = null, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
+        public void LogDebug(string message, object[] parameters = null, int jobIdOverride = -1, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
         {
-            AddContext(callerMemberName, callerFilePath, callerLineNumber, _executionContext.JobId, _executionContext.TaskKey).Debug(message, parameters);
+            AddContext(callerMemberName, callerFilePath, callerLineNumber, jobIdOverride > -1 ? jobIdOverride.ToString() : _executionContext.JobId, _executionContext.TaskKey).Debug(message, parameters);
         }
 
-        public void LogInfo(string message, object[] parameters = null, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
+        public void LogInfo(string message, object[] parameters = null, int jobIdOverride = -1, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
         {
-            AddContext(callerMemberName, callerFilePath, callerLineNumber, _executionContext.JobId, _executionContext.TaskKey).Information(message, parameters);
+            AddContext(callerMemberName, callerFilePath, callerLineNumber, jobIdOverride > -1 ? jobIdOverride.ToString() : _executionContext.JobId, _executionContext.TaskKey).Information(message, parameters);
         }
 
-        public void LogVerbose(string message, object[] parameters = null, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
+        public void LogVerbose(string message, object[] parameters = null, int jobIdOverride = -1, [CallerMemberName] string callerMemberName = "", [CallerFilePath] string callerFilePath = "", [CallerLineNumber] int callerLineNumber = 0)
         {
-            AddContext(callerMemberName, callerFilePath, callerLineNumber, _executionContext.JobId, _executionContext.TaskKey).Verbose(message, parameters);
+            AddContext(callerMemberName, callerFilePath, callerLineNumber, jobIdOverride > -1 ? jobIdOverride.ToString() : _executionContext.JobId, _executionContext.TaskKey).Verbose(message, parameters);
         }
 
         public Serilog.ILogger AddContext(string callerName, string sourceFile, int lineNumber, string jobId, string taskKey)
